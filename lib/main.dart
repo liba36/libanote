@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:liba_note/page/notepage.dart';
 import 'package:liba_note/page/planpage.dart';
-import 'package:liba_note/dao/sqlhelper.dart';
+import 'package:liba_note/utils//sqlhelper.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:liba_note/dao/diary.dart';
+import 'package:liba_note/model//diary.dart';
 import 'package:liba_note/page/editdiarypage.dart';
 import 'package:liba_note/page/diarylistpage.dart';
 

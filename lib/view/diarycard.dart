@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:liba_note/dao/diary.dart';
+import 'package:liba_note/model//diary.dart';
 
 class diarycard extends StatelessWidget {
   diary _diary;

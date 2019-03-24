@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:liba_note/dao/sqlhelper.dart';
+import 'package:liba_note/utils//sqlhelper.dart';
 import 'package:liba_note/view/diarycard.dart';
-import 'package:liba_note/dao/diary.dart';
+import 'package:liba_note/model//diary.dart';
 
 class diarylistpage extends StatefulWidget {
   sqlhelper _sqlhlper;
