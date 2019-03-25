@@ -8,11 +8,11 @@ class diarylistpage extends StatefulWidget {
   sqlhelper _sqlhlper;
   diarylistpage(this._sqlhlper);
   State<StatefulWidget> createState() {
-    return new diarylistState();
+    return new _diarylistState();
   }
 }
 
-class diarylistState extends State<diarylistpage> {
+class _diarylistState extends State<diarylistpage> {
   int _countdiary = -1;
   List<Widget> _listcard = new List();
   @override

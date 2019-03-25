@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 class notepage extends StatefulWidget{
 
   State<StatefulWidget> createState() {
-    return new notepageState();
+    return new _notepageState();
   }
 }
 
-class notepageState extends State<notepage>
+class _notepageState extends State<notepage>
 {
   Widget build(BuildContext context) {
     return new Container(

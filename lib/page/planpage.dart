@@ -8,11 +8,11 @@ class planpage extends StatefulWidget {
   planpage(this._time, this._title, this._context);
 
   State<StatefulWidget> createState() {
-    return new stateplanpage();
+    return new _stateplanpage();
   }
 }
 
-class stateplanpage extends State<planpage> {
+class _stateplanpage extends State<planpage> {
   String tet = "初始化之前";
   @override
   void initState() {

@@ -11,11 +11,11 @@ class editdiarypage extends StatefulWidget {
   Color defulcolor = Color.fromRGBO(74, 169, 170, 1);
   editdiarypage(this.i1, this.i2, this._sqlhlper, this.defulcolor);
   State<StatefulWidget> createState() {
-    return new editdiaryState(i1, i2, defulcolor);
+    return new _editdiaryState(i1, i2, defulcolor);
   }
 }
 
-class editdiaryState extends State<editdiarypage> {
+class _editdiaryState extends State<editdiarypage> {
   String _createres = "";
   String _path1 = "";
   String _listdiary = "";
@@ -25,7 +25,7 @@ class editdiaryState extends State<editdiarypage> {
   String _title = "";
   Color _deafulcolor = Color.fromRGBO(74, 169, 170, 1);
 
-  editdiaryState(this._createres, this._path1, this._deafulcolor);
+  _editdiaryState(this._createres, this._path1, this._deafulcolor);
 
   //
   //
