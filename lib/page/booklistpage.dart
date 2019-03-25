@@ -4,7 +4,6 @@ import 'package:liba_note/utils//sqlhelper.dart';
 import 'package:liba_note/page/editdiarypage.dart';
 
 class booklistpage extends StatefulWidget {
-
   @override
   State<StatefulWidget> createState() {
     return new _booklistState();
@@ -12,14 +11,14 @@ class booklistpage extends StatefulWidget {
 }
 
 class _booklistState extends State<booklistpage> {
-  sqlhelper _sqlhlper =  new sqlhelper();
+  sqlhelper _sqlhlper = new sqlhelper();
   Color _defulcolor = Colors.amber;
 
   List<Widget> test() {
     return <Widget>[
       GestureDetector(
-        onTap:_editdiarypage,
-        child:Card(
+        onTap: _editdiarypage,
+        child: Card(
           child: Text("nihao"),
         ),
       ),
@@ -29,6 +28,36 @@ class _booklistState extends State<booklistpage> {
       Card(
         child: Text("nihao"),
       ),
+      Card(
+        child: Text("nihao"),
+      ),
+      Card(
+        child: Text("nihao"),
+      ),
+      Card(
+        child: Text("nihao"),
+      ),
+      Card(
+        child: Text("nihao"),
+      ),
+      GestureDetector(
+        onTap: _editdiarypage,
+        child: Card(
+          child: Text("nihao"),
+        ),
+      ),
+      GestureDetector(
+        onTap: _editdiarypage,
+        child: Card(
+          child: Text("nihao"),
+        ),
+      ),
+      GestureDetector(
+        onTap: _editdiarypage,
+        child: Card(
+          child: Text("nihao"),
+        ),
+      ),
     ];
   }
 
@@ -37,8 +66,8 @@ class _booklistState extends State<booklistpage> {
       children: <Widget>[
         Text("asdsda"),
         RaisedButton(
-         // onPressed: _editdiarypage(),
-        ),
+            // onPressed: _editdiarypage(),
+            ),
       ],
     );
   }
@@ -48,28 +77,27 @@ class _booklistState extends State<booklistpage> {
         context,
         new MaterialPageRoute(
           builder: (context) =>
-          new editdiarypage(
-              "touyici", "dierci", _sqlhlper, _defulcolor),
+              new editdiarypage("touyici", "dierci", _sqlhlper, _defulcolor),
         ));
   }
 
-    @override
-    Widget build(BuildContext context) {
-      return Scaffold(
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
         body: Container(
-          margin: EdgeInsets.only(left: 10, right: 10),
-             child: GridView.count(
-                crossAxisCount: 3,
-                children: test(),
-              ),
-
-          )
-
-
-
-      );
-    }
+      margin: EdgeInsets.only(left: 10, right: 10),
+      child: GridView.count(
+        crossAxisCount: 3,
+        //滚动方向
+        scrollDirection: Axis.vertical,
+        // 左右间隔
+        crossAxisSpacing: 10.0,
+        // 上下间隔
+        mainAxisSpacing: 10.0,
+        //宽高比
+        childAspectRatio: 9 / 13,
+        children: test(),
+      ),
+    ));
   }
-
-
-
+}
