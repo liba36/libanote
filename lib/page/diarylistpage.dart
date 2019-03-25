@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:liba_note/utils//sqlhelper.dart';
 import 'package:liba_note/view/diarycard.dart';
 import 'package:liba_note/model//diary.dart';
+import 'package:liba_note/page/editdiarypage.dart';
 
 class diarylistpage extends StatefulWidget {
   sqlhelper _sqlhlper;
@@ -20,6 +21,7 @@ class _diarylistState extends State<diarylistpage> {
     super.initState();
     _getDiaryList();
   }
+
 
   //获取日记列表
   _getDiaryList() async {

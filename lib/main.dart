@@ -6,6 +6,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:liba_note/model//diary.dart';
 import 'package:liba_note/page/editdiarypage.dart';
 import 'package:liba_note/page/diarylistpage.dart';
+import 'package:liba_note/page/booklistpage.dart';
 
 
 void main() => runApp(MyApp());
@@ -62,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
       case 0:
         return new diarylistpage(widget._sqlhlper);
       case 1:
-        return new planpage("","","");
+        return new booklistpage();
       case 4:
         _selectedDrawerIndex = 0;
         break;
@@ -92,6 +93,16 @@ class _MyHomePageState extends State<MyHomePage> {
               "touyici", "dierci", widget._sqlhlper, _defulcolor),
         ));   
   }
+
+  _editdiarypage1() {
+    Navigator.push(
+        context,
+        new MaterialPageRoute(
+          builder: (context) => new booklistpage(
+             ),
+        ));
+  }
+
 
 //点击返回时候的操作
   Future<bool> _onWillPop() {
@@ -149,7 +160,7 @@ class _MyHomePageState extends State<MyHomePage> {
           body: _getPage(_selectedDrawerIndex),          
           floatingActionButton: FloatingActionButton(
             backgroundColor: _blue,
-            onPressed: _editdiarypage,
+            onPressed: _editdiarypage1,
             tooltip: 'Increment', //长按显示的文字
             child: Icon(Icons.add),
           ),
