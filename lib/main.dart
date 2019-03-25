@@ -41,7 +41,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Color _defulcolor;
   int _selectedDrawerIndex = 0;
   String title = "篱笆note v0.01 ";
-  planpage _planpagm = new planpage("2019-01-01", "第一", "春雨哈哈哈");
   final _naviitemlist = [
     new Navitem(Icons.book, "日记"),
     new Navitem(Icons.account_balance_wallet, "计划"),
