@@ -110,7 +110,6 @@ class _editdiaryState extends State<editdiarypage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                  //输入title
-
                 Container(
                   margin: EdgeInsets.only(left: 5, right: 10),
                   child: TextField(
