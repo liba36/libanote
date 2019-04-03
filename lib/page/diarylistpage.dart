@@ -76,10 +76,16 @@ class _diarylistState extends State<diarylistpage> {
   }
 
   Widget build(BuildContext context) {
-    return new RefreshIndicator(
+    return new Scaffold(
+    body:
+    RefreshIndicator(
       onRefresh: _refresh,
       // color: Colors.red,
       child: _getbody(),
-    );
+    ),
+    floatingActionButton: FloatingActionButton(
+      child: Icon(Icons.add),
+      //onPressed: ,),
+    ));
   }
 }

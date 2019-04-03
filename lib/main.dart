@@ -7,6 +7,7 @@ import 'package:liba_note/model//diary.dart';
 import 'package:liba_note/page/editdiarypage.dart';
 import 'package:liba_note/page/diarylistpage.dart';
 import 'package:liba_note/page/booklistpage.dart';
+import 'package:liba_note/page/booklistpage.dart';
 
 
 void main() => runApp(MyApp());
@@ -22,8 +23,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      home: MyHomePage(title: 'LibaNote'),
+
+      home: booklistpage(),
     );
   }
 }

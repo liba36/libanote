@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:liba_note/utils//sqlhelper.dart';
 import 'package:liba_note/page/editdiarypage.dart';
 import 'package:liba_note/page/addbookpage.dart';
+import 'package:liba_note/page/diarylistpage.dart';
 
 class booklistpage extends StatefulWidget {
   @override
@@ -24,9 +25,33 @@ class _booklistState extends State<booklistpage> {
     return list;
   }
 
+  _showdi(){
+    return    showDialog(
+      context: context,
+      child: new AlertDialog(
+        title: new Text('Are you sure?'),
+        content: new Text('libanote will be stopped..'),
+        actions: <Widget>[
+          new FlatButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: new Text('No'),
+          ),
+          new FlatButton(
+            onPressed: () {
+              Navigator.of(context).pop(true);
+            },
+            child: new Text('Yes'),
+          ),
+        ],
+      ),
+    ) ??
+        false;
+  }
+
   Widget _getGridItem() {
     return new GestureDetector(
-        onLongPress: _editdiarypage,
+      onTap: _editdiarypage,
+       onLongPress: _showdi,
         child: Column(
           children: <Widget>[
             new Image.asset(
@@ -50,6 +75,12 @@ class _booklistState extends State<booklistpage> {
   setState(() {
     _title="edit";
   });
+  Navigator.push(
+      context,
+      new MaterialPageRoute(
+        builder: (context) =>
+        new diarylistpage(_sqlhlper)
+      ));
 
   }
 
