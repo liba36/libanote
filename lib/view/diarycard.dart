@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:liba_note/model//diary.dart';
+import 'package:liba_note/model/diary.dart';
 
 class diarycard extends StatelessWidget {
   diary _diary;
@@ -36,7 +36,7 @@ class diarycard extends StatelessWidget {
           Expanded(
             child: Card(
               margin: EdgeInsets.only(left: 20, right: 10, top: 5, bottom: 10),
-              color: Color.fromRGBO(255, 255, 255, 1),
+              color: Color.fromRGBO(250, 250, 250, 1),
               child: new Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[

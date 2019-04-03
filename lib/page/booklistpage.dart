@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:liba_note/utils//sqlhelper.dart';
-import 'package:liba_note/page/editdiarypage.dart';
 import 'package:liba_note/page/addbookpage.dart';
 import 'package:liba_note/page/diarylistpage.dart';
+import 'package:liba_note/utils/sqlhelper.dart';
 
 class booklistpage extends StatefulWidget {
   @override
@@ -13,7 +12,8 @@ class booklistpage extends StatefulWidget {
 }
 
 class _booklistState extends State<booklistpage> {
-  sqlhelper _sqlhlper = new sqlhelper();
+ //sqlhelper _sqlhelper = new sqlhelper();
+  sqlhelper _sqlutils = new sqlhelper();
   Color _defulcolor = Color.fromRGBO(74, 169, 170, 1);
   String _title = "defaut";
 
@@ -79,7 +79,7 @@ class _booklistState extends State<booklistpage> {
       context,
       new MaterialPageRoute(
         builder: (context) =>
-        new diarylistpage(_sqlhlper)
+        new diarylistpage(_sqlutils)
       ));
 
   }

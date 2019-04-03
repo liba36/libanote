@@ -21,9 +21,6 @@ class diary {
 
 
   diary(this._title,this._context,this._createtime,this._edittime);
-
-  
-
   Map<String,dynamic> diaryTomap()
   {
     Map map = <String,dynamic>{

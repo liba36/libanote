@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:liba_note/page/notepage.dart';
 import 'package:liba_note/page/planpage.dart';
-import 'package:liba_note/utils//sqlhelper.dart';
+import 'package:liba_note/utils/sqlhelper.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:liba_note/model//diary.dart';
+import 'package:liba_note/model/diary.dart';
 import 'package:liba_note/page/editdiarypage.dart';
 import 'package:liba_note/page/diarylistpage.dart';
 import 'package:liba_note/page/booklistpage.dart';
@@ -23,7 +23,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-
       home: booklistpage(),
     );
   }
@@ -64,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
       case 0:
         return new diarylistpage(widget._sqlhlper);
       case 1:
-        return new booklistpage();
+
       case 4:
         _selectedDrawerIndex = 0;
         break;
@@ -99,8 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Navigator.push(
         context,
         new MaterialPageRoute(
-          builder: (context) => new booklistpage(
-             ),
+         // builder: (context) => new booklistpage(),
         ));
   }
 
