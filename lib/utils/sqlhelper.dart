@@ -39,6 +39,18 @@ class sqlhelper {
   }
 
   FutureOr _onCreate(Database db, int version) async {
+
+    try {
+      await db.execute('''
+        CREATE TABLE book (
+        id integer primary key autoincrement, 
+        title text, 
+        description text,
+        createtime text,
+        edittime text)''');
+    } catch (e) {
+      _createRes = "create diary table error : " + e.toString();
+    }
     try {
       await db.execute('''
         CREATE TABLE diary (

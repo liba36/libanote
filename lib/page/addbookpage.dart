@@ -9,11 +9,11 @@ class addbookpage extends StatefulWidget {
   }
 }
 
+
 class _addbookState extends State<addbookpage> {
   Color _defulcolor = Color.fromRGBO(74, 169, 170, 1);
   String _title = "新的本子哟";
   int _selectvalue;
-
   List<DropdownMenuItem> _getDdmItem() {
     final List<DropdownMenuItem> _DdmItem = List();
     final DropdownMenuItem _item1 =

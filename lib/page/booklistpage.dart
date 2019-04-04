@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:liba_note/page/addbookpage.dart';
 import 'package:liba_note/page/diarylistpage.dart';
 import 'package:liba_note/utils/sqlhelper.dart';
+import 'dart:io';
+import 'package:flutter/services.dart';
 
 class booklistpage extends StatefulWidget {
   @override
@@ -12,10 +14,12 @@ class booklistpage extends StatefulWidget {
 }
 
 class _booklistState extends State<booklistpage> {
- //sqlhelper _sqlhelper = new sqlhelper();
+  //sqlhelper _sqlhelper = new sqlhelper();
   sqlhelper _sqlutils = new sqlhelper();
-  Color _defulcolor = Color.fromRGBO(74, 169, 170, 1);
+  Color _defaultcolor = Color.fromRGBO(74, 169, 170, 1);
   String _title = "defaut";
+
+
 
   List<Widget> test() {
     List<Widget> list = new List();
@@ -25,33 +29,33 @@ class _booklistState extends State<booklistpage> {
     return list;
   }
 
-  _showdi(){
-    return    showDialog(
-      context: context,
-      child: new AlertDialog(
-        title: new Text('Are you sure?'),
-        content: new Text('libanote will be stopped..'),
-        actions: <Widget>[
-          new FlatButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: new Text('No'),
+  _showdi() {
+    return showDialog(
+          context: context,
+          child: new AlertDialog(
+            title: new Text('Are you sure?'),
+            content: new Text('libanote will be stopped..'),
+            actions: <Widget>[
+              new FlatButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: new Text('No'),
+              ),
+              new FlatButton(
+                onPressed: () {
+                  Navigator.of(context).pop(true);
+                },
+                child: new Text('Yes'),
+              ),
+            ],
           ),
-          new FlatButton(
-            onPressed: () {
-              Navigator.of(context).pop(true);
-            },
-            child: new Text('Yes'),
-          ),
-        ],
-      ),
-    ) ??
+        ) ??
         false;
   }
 
   Widget _getGridItem() {
     return new GestureDetector(
-      onTap: _editdiarypage,
-       onLongPress: _showdi,
+        onTap: _editdiarypage,
+        onLongPress: _showdi,
         child: Column(
           children: <Widget>[
             new Image.asset(
@@ -66,22 +70,17 @@ class _booklistState extends State<booklistpage> {
   }
 
   _editdiarypage() {
-  /*  Navigator.push(
+    /*  Navigator.push(
         context,
         new MaterialPageRoute(
           builder: (context) =>
               new editdiarypage("touyici", "dierci", _sqlhlper, _defulcolor),
         ));*/
-  setState(() {
-    _title="edit";
-  });
-  Navigator.push(
-      context,
-      new MaterialPageRoute(
-        builder: (context) =>
-        new diarylistpage(_sqlutils)
-      ));
 
+    Navigator.push(
+        context,
+        new MaterialPageRoute(
+            builder: (context) => new diarylistpage(_sqlutils)));
   }
 
   _addnewbook() {
@@ -90,6 +89,7 @@ class _booklistState extends State<booklistpage> {
         new MaterialPageRoute(
           builder: (context) => new addbookpage(),
         ));
+
   }
 
   Future<Null> _refresh() async {}
@@ -97,10 +97,6 @@ class _booklistState extends State<booklistpage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: new AppBar(
-        title: new Text("liba36"),
-        backgroundColor: _defulcolor,
-      ),
       body: Container(
         margin: EdgeInsets.only(left: 10, right: 10, top: 20),
         child: RefreshIndicator(
@@ -121,8 +117,32 @@ class _booklistState extends State<booklistpage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _addnewbook,
-        backgroundColor: _defulcolor,
+        backgroundColor: _defaultcolor,
         child: Icon(Icons.add),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomAppBar(
+        color: _defaultcolor, //底部工具栏的颜色。
+        //设置底部栏的形状
+        shape: CircularNotchedRectangle(),
+        child: Row(
+          //里边可以放置大部分Widget，让我们随心所欲的设计底栏
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.view_carousel,
+                color: Colors.white,
+              ),
+              color: Colors.white,
+            ),
+            IconButton(
+              icon: Icon(Icons.settings, color: Colors.white),
+              color: Colors.white,
+            ),
+          ],
+        ),
       ),
     );
   }

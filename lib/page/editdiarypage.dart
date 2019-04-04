@@ -69,7 +69,6 @@ class _editdiaryState extends State<editdiarypage> {
         _listdiary = reslist;
       });
     }
-
     setState(() {
       _path1 = widget._sqlhlper.path1;
       _createres = widget._sqlhlper.createres;
@@ -80,13 +79,13 @@ class _editdiaryState extends State<editdiarypage> {
     return new Scaffold(
         backgroundColor: Color.fromRGBO(255, 255, 255, 1),
         appBar: new AppBar(
-          title: new Text('添加'),
-          backgroundColor: _deafulcolor,
+          title: new Text('添加',style: TextStyle(color: Colors.black,fontSize: 18),),
+          backgroundColor: Colors.white,
           elevation: 0,
           leading: Builder(builder: (BuildContext context) {
             return IconButton(
               icon: const Icon(Icons.arrow_back_ios),
-              color: Colors.white,
+              color: _deafulcolor,
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -95,11 +94,11 @@ class _editdiaryState extends State<editdiarypage> {
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.refresh),
-              color: Colors.white, onPressed: () {},
+              color: _deafulcolor, onPressed: () {},
             ),
             IconButton(
               icon: Icon(Icons.done),
-              color: Colors.white,
+              color: _deafulcolor,
               onPressed: () => {_save(), Navigator.pop(context)},
             ),            
           ],

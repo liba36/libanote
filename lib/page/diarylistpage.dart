@@ -4,6 +4,8 @@ import 'package:liba_note/utils/sqlhelper.dart';
 import 'package:liba_note/view/diarycard.dart';
 import 'package:liba_note/model/diary.dart';
 import 'package:liba_note/page/editdiarypage.dart';
+import 'package:flutter/services.dart';
+import 'dart:io';
 
 class diarylistpage extends StatefulWidget {
   sqlhelper _sqlhlper;
@@ -17,6 +19,7 @@ class diarylistpage extends StatefulWidget {
 
 class _diarylistState extends State<diarylistpage> {
   int _countdiary = -1;
+  Color _defaultcolor = Color.fromRGBO(74, 169, 170, 1);
   List<Widget> _listcard = new List();
 
   @override
@@ -54,6 +57,15 @@ class _diarylistState extends State<diarylistpage> {
     return;
   }
 
+  _addDiaryPage() {
+    Navigator.push(
+        context,
+        new MaterialPageRoute(
+          builder: (context) => new editdiarypage(
+              "touyici", "dierci", widget._sqlhlper, _defaultcolor),
+        ));
+  }
+
   _getbody() {
     if (_countdiary >= 0) {
       _listcard.insert(
@@ -88,28 +100,29 @@ class _diarylistState extends State<diarylistpage> {
   Widget build(BuildContext context) {
     return new Scaffold(
       backgroundColor: Colors.white,
-        appBar: new AppBar(
-          backgroundColor: Colors.white,
-          leading: IconButton(
-              icon: Icon(
-                Icons.arrow_back,
-                color: Color.fromRGBO(74, 169, 170, 1),
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              }),
-          elevation: 0,
-        ),
-        body: RefreshIndicator(
+      appBar: new AppBar(
 
-          onRefresh: _refresh,
-         // color: Colors.red,
-          child: _getbody(),
-        ),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: Color.fromRGBO(74, 169, 170, 1),
-          child: Icon(Icons.add),
-          //onPressed: ,),
-        ));
+        backgroundColor: Colors.white,
+        leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: Color.fromRGBO(74, 169, 170, 1),
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            }),
+        elevation: 0,
+      ),
+      body: RefreshIndicator(
+        onRefresh: _refresh,
+        // color: Colors.red,
+        child: _getbody(),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Color.fromRGBO(74, 169, 170, 1),
+        child: Icon(Icons.add),
+        onPressed: _addDiaryPage,
+      ),
+    );
   }
 }
