@@ -17,7 +17,7 @@ if (Platform.isAndroid) {
 // 以下两行 设置android状态栏为透明的沉浸。写在组件渲染之后，是为了在渲染后进行set赋值，覆盖状态栏，写在渲染之前MaterialApp组件会覆盖掉这个值。
   SystemUiOverlayStyle systemUiOverlayStyle = SystemUiOverlayStyle(statusBarColor: Colors.transparent);
   SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
-};
+}
 }
 
 class Navitem {
@@ -33,9 +33,6 @@ class MyApp extends StatelessWidget {
       home: booklistpage(),
       theme: new ThemeData(
         primaryColor:Colors.amberAccent,
-        brightness: Brightness.light,
-       // primaryColor: Colors.lightBlue[800],
-        accentColor: Colors.cyan[600],
       ),
     );
   }
@@ -167,7 +164,7 @@ class _MyHomePageState extends State<MyHomePage> {
           backgroundColor: Color.fromRGBO(245, 245, 245, 5),
           appBar: AppBar(
             title: Text(title),
-            backgroundColor: _defulcolor,
+            backgroundColor: Colors.white,
           ),
           body: _getPage(_selectedDrawerIndex),
           floatingActionButton: FloatingActionButton(

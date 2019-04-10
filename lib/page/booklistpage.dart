@@ -17,13 +17,10 @@ class _booklistState extends State<booklistpage> {
   //sqlhelper _sqlhelper = new sqlhelper();
   sqlhelper _sqlutils = new sqlhelper();
   Color _defaultcolor = Color.fromRGBO(74, 169, 170, 1);
-  String _title = "defaut";
-
-
-
+  String _title = "d";
   List<Widget> test() {
     List<Widget> list = new List();
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 100; i++) {
       list.add(_getGridItem());
     }
     return list;
@@ -97,6 +94,13 @@ class _booklistState extends State<booklistpage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: PreferredSize(child: new AppBar(
+        backgroundColor:_defaultcolor,
+        elevation: 0,
+      ),
+          preferredSize: Size.fromHeight(20)),
+       
       body: Container(
         margin: EdgeInsets.only(left: 10, right: 10, top: 20),
         child: RefreshIndicator(
@@ -106,7 +110,7 @@ class _booklistState extends State<booklistpage> {
             //滚动方向
             scrollDirection: Axis.vertical,
             // 左右间隔
-            crossAxisSpacing: 10.0,
+         //  crossAxisSpacing: 10.0,
             // 上下间隔
             mainAxisSpacing: 10.0,
             //宽高比
