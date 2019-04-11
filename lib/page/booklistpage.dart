@@ -20,7 +20,7 @@ class _booklistState extends State<booklistpage> {
   String _title = "d";
   List<Widget> test() {
     List<Widget> list = new List();
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < 5; i++) {
       list.add(_getGridItem());
     }
     return list;
@@ -49,16 +49,16 @@ class _booklistState extends State<booklistpage> {
         false;
   }
 
-  Widget _getGridItem() {
+  _getGridItem() {
     return new GestureDetector(
         onTap: _editdiarypage,
         onLongPress: _showdi,
         child: Column(
           children: <Widget>[
             new Image.asset(
-              'assets/images/diary-y.png',
-              height: 92.13,
-              width: 65.55,
+              'assets/images/diary-b.png',
+              height: 110.195,//0.03
+              width: 78.66,
               fit: BoxFit.fill,
             ),
             Text(_title),
@@ -97,12 +97,12 @@ class _booklistState extends State<booklistpage> {
       backgroundColor: Colors.white,
       appBar: PreferredSize(child: new AppBar(
         backgroundColor:_defaultcolor,
+        title:Icon(Icons.four_k,color: Colors.white,),
         elevation: 0,
-      ),
-          preferredSize: Size.fromHeight(20)),
+      ), preferredSize: Size.fromHeight(36)),
        
       body: Container(
-        margin: EdgeInsets.only(left: 10, right: 10, top: 20),
+        padding: EdgeInsets.only(left: 10, right: 10, top: 20),
         child: RefreshIndicator(
           onRefresh: _refresh,
           child: GridView.count(
@@ -112,7 +112,7 @@ class _booklistState extends State<booklistpage> {
             // 左右间隔
          //  crossAxisSpacing: 10.0,
             // 上下间隔
-            mainAxisSpacing: 10.0,
+            //mainAxisSpacing: 5.0,
             //宽高比
             childAspectRatio: 9 / 13,
             children: test(),

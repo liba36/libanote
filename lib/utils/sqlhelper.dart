@@ -40,6 +40,7 @@ class sqlhelper {
 
   FutureOr _onCreate(Database db, int version) async {
 
+    //小本子列表
     try {
       await db.execute('''
         CREATE TABLE book (
@@ -51,6 +52,8 @@ class sqlhelper {
     } catch (e) {
       _createRes = "create diary table error : " + e.toString();
     }
+
+    //日记内容
     try {
       await db.execute('''
         CREATE TABLE diary (

@@ -1,29 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:liba_note/page/notepage.dart';
-import 'package:liba_note/page/planpage.dart';
 import 'package:liba_note/utils/sqlhelper.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:liba_note/model/diary.dart';
 import 'package:liba_note/page/editdiarypage.dart';
 import 'package:liba_note/page/diarylistpage.dart';
-import 'package:liba_note/page/booklistpage.dart';
 import 'package:liba_note/page/booklistpage.dart';
 import 'package:flutter/services.dart';
 import 'dart:io';
 
-
-void main(){ runApp(MyApp());
-if (Platform.isAndroid) {
+void main() {
+  runApp(MyApp());
+  if (Platform.isAndroid) {
 // 以下两行 设置android状态栏为透明的沉浸。写在组件渲染之后，是为了在渲染后进行set赋值，覆盖状态栏，写在渲染之前MaterialApp组件会覆盖掉这个值。
-  SystemUiOverlayStyle systemUiOverlayStyle = SystemUiOverlayStyle(statusBarColor: Colors.transparent);
-  SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
-}
-}
-
-class Navitem {
-  IconData icon;
-  String title;
-  Navitem(this.icon, this.title);
+    SystemUiOverlayStyle systemUiOverlayStyle =
+        SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+    SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -32,10 +22,17 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: booklistpage(),
       theme: new ThemeData(
-        primaryColor:Colors.amberAccent,
+        primaryColor: Colors.amberAccent,
       ),
     );
   }
+}
+
+class Navitem {
+  IconData icon;
+  String title;
+
+  Navitem(this.icon, this.title);
 }
 
 class MyHomePage extends StatefulWidget {
@@ -108,33 +105,32 @@ class _MyHomePageState extends State<MyHomePage> {
     Navigator.push(
         context,
         new MaterialPageRoute(
-          // builder: (context) => new booklistpage(),
-        ));
+            // builder: (context) => new booklistpage(),
+            ));
   }
-
 
 //点击返回时候的操作
   Future<bool> _onWillPop() {
     if (_selectedDrawerIndex == 0) {
       return showDialog(
-        context: context,
-        child: new AlertDialog(
-          title: new Text('Are you sure?'),
-          content: new Text('libanote will be stopped..'),
-          actions: <Widget>[
-            new FlatButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: new Text('No'),
+            context: context,
+            child: new AlertDialog(
+              title: new Text('Are you sure?'),
+              content: new Text('libanote will be stopped..'),
+              actions: <Widget>[
+                new FlatButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: new Text('No'),
+                ),
+                new FlatButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(true);
+                  },
+                  child: new Text('Yes'),
+                ),
+              ],
             ),
-            new FlatButton(
-              onPressed: () {
-                Navigator.of(context).pop(true);
-              },
-              child: new Text('Yes'),
-            ),
-          ],
-        ),
-      ) ??
+          ) ??
           false;
     } else {
       setState(() {
