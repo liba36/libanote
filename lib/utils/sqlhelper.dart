@@ -5,6 +5,7 @@ import 'package:path/path.dart';
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:liba_note/model/diary.dart';
+import 'package:liba_note/model/book.dart';
 
 class sqlhelper {
   //创建数据库结果
@@ -39,20 +40,20 @@ class sqlhelper {
   }
 
   FutureOr _onCreate(Database db, int version) async {
-
     //小本子列表
     try {
       await db.execute('''
         CREATE TABLE book (
         id integer primary key autoincrement, 
         title text, 
+        image integer,
+        type integer,
         description text,
         createtime text,
         edittime text)''');
     } catch (e) {
-      _createRes = "create diary table error : " + e.toString();
+      _createRes = "create book table error : " + e.toString();
     }
-
     //日记内容
     try {
       await db.execute('''
@@ -73,21 +74,31 @@ class sqlhelper {
         foreign key(id_d) references diary(id_d) on delete cascade on update cascade
         )''');
     } catch (e) {
-      _createRes += "\n create images table error : " + e.toString();
+      _createRes += "create images table error : " + e.toString();
     }
   }
 
-  Future<int> insertDiaryNote(diary di) async {
+  Future<int> insertDiary(diary di) async {
     Database database = await db;
     var result = database.insert("diary", di.diaryTomap());
     return result;
   }
 
-  Future<List>  getDiaryNote() async {
+  Future<List> getDiary() async {
     Database database = await db;
-    var result = await database
-        .rawQuery("select * from diary");//asc
-    //print('获取所有diyProject,当前diyProject有: $result');
+    var result = await database.rawQuery("select * from diary");
+    return result;
+  }
+
+  Future<int> inserBook(book bo) async {
+    Database database = await db;
+    var result = database.insert("book", bo.bookTomap());
+    return result;
+  }
+
+  Future<List> getBook() async {
+    Database database = await db;
+    var result = await database.rawQuery("select * from book");
     return result;
   }
 }

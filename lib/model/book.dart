@@ -1,10 +1,15 @@
 class book {
+  int _id = 0;
   String _name = "";
   int _type = 0;
   String _context = "";
   int _image = -1;
   DateTime _createtime = null;
   DateTime _edittime = null;
+
+  int get id => _id;
+
+  set id(int id) => _id = id;
 
   String get name => _name;
 
@@ -30,12 +35,15 @@ class book {
 
   set edittime(DateTime edittime) => _edittime = edittime;
 
-  book(this._name, this._context, this._createtime, this._edittime);
+  book(this._name, this._type, this._context, this._image, this._createtime,
+      this._edittime,);
 
-  Map<String, dynamic> diaryTomap() {
+  Map<String, dynamic> bookTomap() {
     Map map = <String, dynamic>{
-      "name": _name,
-      "context": _context,
+      "title": _name,
+      "image": _image,
+      "type": _type,
+      "description": _context,
       "createtime": _createtime.toString(),
       "edittime": _edittime.toString()
     };

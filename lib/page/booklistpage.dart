@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:liba_note/page/addbookpage.dart';
+import 'package:liba_note/page/editbookpage.dart';
 import 'package:liba_note/page/diarylistpage.dart';
 import 'package:liba_note/utils/sqlhelper.dart';
 import 'dart:io';
 import 'package:flutter/services.dart';
+import 'package:liba_note/view/bookcard.dart';
+import 'package:liba_note/model/book.dart';
 
 class booklistpage extends StatefulWidget {
   @override
@@ -14,19 +16,88 @@ class booklistpage extends StatefulWidget {
 }
 
 class _booklistState extends State<booklistpage> {
-  //sqlhelper _sqlhelper = new sqlhelper();
-  sqlhelper _sqlutils = new sqlhelper();
-  Color _defaultcolor = Color.fromRGBO(74, 169, 170, 1);
+  sqlhelper _SqlUtils = new sqlhelper();
+  Color _ColorDeful = Color.fromRGBO(74, 169, 170, 1);
   String _title = "d";
-  List<Widget> test() {
-    List<Widget> list = new List();
-    for (int i = 0; i < 5; i++) {
-      list.add(_getGridItem());
-    }
-    return list;
+  int _CountBook = -1;
+  List<Widget> _BookList = new List();
+
+
+  @override
+  initState() {
+    super.initState();
+    _getbooklist();
   }
 
-  _showdi() {
+  _getbooklist() async {
+    _BookList.clear();
+    List<bookcard> temlistcard = new List();
+    List<Map> res = await _SqlUtils.getBook();
+    if (res.length > 0) {
+      for (int i = 0; i < res.length; i++) {
+        Map h = res[i];
+        book _BookTemp = new book(
+          h["title"],
+          h["type"],
+          h["description"],
+          h["image"],
+          DateTime.parse(h["createtime"]),
+          DateTime.parse(h["edittime"]),
+        );
+        _BookTemp.id = h["id"];
+        bookcard _BookcardTemp = new bookcard(_SqlUtils, _BookTemp);
+        temlistcard.add(_BookcardTemp);
+      }
+    }
+    setState(() {
+      _BookList.addAll(temlistcard);
+      _CountBook = _BookList.length;
+    });
+    temlistcard.clear();
+  }
+
+
+  _getbody(){
+    if (_CountBook >= 0) {
+     return       Container(
+           padding: EdgeInsets.only(left: 10, right: 10, top: 10),
+           child:Column(
+             children: <Widget>[
+               Text("$_CountBook  ddfssdfas"),
+               Expanded(
+                 flex: 1,
+                 child:   RefreshIndicator(
+                   onRefresh: _refresh,
+                   child:GridView.count(
+                     //shrinkWrap:true,
+                     crossAxisCount: 4,
+                     //滚动方向
+                     scrollDirection: Axis.vertical,
+                     // 左右间隔
+                     // crossAxisSpacing: 10.0,
+                     // 上下间隔
+                     mainAxisSpacing: 5.0,
+                     //宽高比
+                     childAspectRatio: 10 / 16,
+                     children: _BookList,
+                   ),
+                 ),
+               ),
+
+             ],
+           )
+
+       );
+    }  else {
+      return new Padding(
+        padding: EdgeInsets.all(200),
+        child: CupertinoActivityIndicator(),
+      );
+    }
+  }
+
+
+  _bakshow() {
     return showDialog(
           context: context,
           child: new AlertDialog(
@@ -49,84 +120,45 @@ class _booklistState extends State<booklistpage> {
         false;
   }
 
-  _getGridItem() {
-    return new GestureDetector(
-        onTap: _editdiarypage,
-        onLongPress: _showdi,
-        child: Column(
-          children: <Widget>[
-            new Image.asset(
-              'assets/images/diary-b.png',
-              height: 110.195,//0.03
-              width: 78.66,
-              fit: BoxFit.fill,
-            ),
-            Text(_title),
-          ],
-        ));
-  }
-
-  _editdiarypage() {
-    /*  Navigator.push(
-        context,
-        new MaterialPageRoute(
-          builder: (context) =>
-              new editdiarypage("touyici", "dierci", _sqlhlper, _defulcolor),
-        ));*/
-
-    Navigator.push(
-        context,
-        new MaterialPageRoute(
-            builder: (context) => new diarylistpage(_sqlutils)));
-  }
-
   _addnewbook() {
     Navigator.push(
         context,
         new MaterialPageRoute(
-          builder: (context) => new addbookpage(),
+          builder: (context) => new editbookpage(0, _SqlUtils, _ColorDeful),
         ));
-
   }
 
-  Future<Null> _refresh() async {}
+  Future<Null> _refresh() async {
+    setState(() {
+      _CountBook = -1;
+    });
+   _getbooklist();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: PreferredSize(child: new AppBar(
-        backgroundColor:_defaultcolor,
-        title:Icon(Icons.four_k,color: Colors.white,),
-        elevation: 0,
-      ), preferredSize: Size.fromHeight(36)),
-       
-      body: Container(
-        padding: EdgeInsets.only(left: 10, right: 10, top: 20),
-        child: RefreshIndicator(
-          onRefresh: _refresh,
-          child: GridView.count(
-            crossAxisCount: 4,
-            //滚动方向
-            scrollDirection: Axis.vertical,
-            // 左右间隔
-         //  crossAxisSpacing: 10.0,
-            // 上下间隔
-            //mainAxisSpacing: 5.0,
-            //宽高比
-            childAspectRatio: 9 / 13,
-            children: test(),
+      appBar: PreferredSize(
+          child: new AppBar(
+            backgroundColor: _ColorDeful,
+            title: Icon(
+              Icons.four_k,
+              color: Colors.white,
+            ),
+            elevation: 0,
           ),
-        ),
-      ),
+          preferredSize: Size.fromHeight(36)),
+      body: _getbody(),
+
       floatingActionButton: FloatingActionButton(
         onPressed: _addnewbook,
-        backgroundColor: _defaultcolor,
+        backgroundColor: _ColorDeful,
         child: Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
-        color: _defaultcolor, //底部工具栏的颜色。
+        color: _ColorDeful, //底部工具栏的颜色。
         //设置底部栏的形状
         shape: CircularNotchedRectangle(),
         child: Row(
@@ -151,3 +183,4 @@ class _booklistState extends State<booklistpage> {
     );
   }
 }
+

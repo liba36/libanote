@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:liba_note/model/diary.dart';
 import 'package:liba_note/utils/sqlhelper.dart';
@@ -19,7 +18,7 @@ class _editdiaryState extends State<editdiarypage> {
   String _createres = "";
   String _path1 = "";
   String _listdiary = "";
-  
+
   String _counter = "";
   String _context = "";
   String _title = "";
@@ -27,8 +26,6 @@ class _editdiaryState extends State<editdiarypage> {
 
   _editdiaryState(this._createres, this._path1, this._deafulcolor);
 
-  //
-  //
   _changetitle(String title) {
     _title = title;
   }
@@ -44,34 +41,9 @@ class _editdiaryState extends State<editdiarypage> {
   Future _save() async {
     var _nowtime = DateTime.now();
     diary _temdiary = new diary(_title, _context, _nowtime, _nowtime);
-    var res = await widget._sqlhlper.insertDiaryNote(_temdiary);
+    var res = await widget._sqlhlper.insertDiary(_temdiary);
     setState(() {
       _createres = res.toString();
-    });
-  }
-
-  Future _update() async {
-    setState(() {
-      _listdiary = "等待。。。";
-    });
-    List<Map> res = await widget._sqlhlper.getDiaryNote();
-    if (res.length > 0) {
-      String reslist = "";
-      for (int i = 0; i < res.length; i++) {
-        Map h = res[i];
-        reslist += "title :";
-        reslist += h["title"];
-        reslist += "     context :";
-        reslist += h["context"];
-        reslist += "\n";
-      }
-      setState(() {
-        _listdiary = reslist;
-      });
-    }
-    setState(() {
-      _path1 = widget._sqlhlper.path1;
-      _createres = widget._sqlhlper.createres;
     });
   }
 
@@ -198,8 +170,6 @@ class _editdiaryState extends State<editdiarypage> {
                   ),
                 ),
 
-                //  Text("error: $_createres \n path: $_path1"),
-                //Text("结果是 ：\n $_listdiary"),
               ],
             )));
   }

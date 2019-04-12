@@ -1,19 +1,28 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:liba_note/utils/sqlhelper.dart';
+import 'package:liba_note/model/book.dart';
 
-class addbookpage extends StatefulWidget {
+class editbookpage extends StatefulWidget {
+  sqlhelper SqlUtils;
+  Color ColorDeful;
+  int Type; //0 add 1 edit
+  book BookInstance;
+  editbookpage(this.Type, this.SqlUtils, this.ColorDeful,);
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return new _addbookState();
+    return new _editbookState();
   }
 }
 
-class _addbookState extends State<addbookpage> {
-  Color _defulcolor = Color.fromRGBO(74, 169, 170, 1);
-  String _title = "新的本子哟";
-  int _selectvalue;
-
+class _editbookState extends State<editbookpage> {
+  String _Title = "新的本子哟";
+  int _Type = 0;
+  String _Context = "";
+  int _Image = -1;
+  String _saveres = "werwrewrew";
   List<DropdownMenuItem> _getDdmItem() {
     final List<DropdownMenuItem> _DdmItem = List();
     final DropdownMenuItem _item1 = DropdownMenuItem(
@@ -56,30 +65,55 @@ class _addbookState extends State<addbookpage> {
 
   _changeType(T) {
     setState(() {
-      _selectvalue = T;
+      _Type = T;
     });
   }
 
   _changeTitle(T) {
     if ("" != T) {
       setState(() {
-        _title = T;
+        _Title = T;
       });
     } else {
-      setState(() {
-        _title = "新的本子哟";
-      });
+      if (widget.Type != 0) {
+        setState(() {
+          _Title = widget.BookInstance.name;
+        });
+      } else {
+        setState(() {
+          _Title = "新的本子哟";
+        });
+      }
     }
   }
 
-  _changeContext(T) {}
+  _changeContext(T) {
+    setState(() {
+      _Context = T;
+    });
+  }
 
-  _save() {}
+  Future _save() async{
+    if(widget.Type == 0)
+      {
+        setState(() {
+          _saveres = "begin";
+        });
+        var _NowTime = DateTime.now();
+        book _BookTemp = new book(_Title, _Type, _Context, _Image, _NowTime, _NowTime);
+        var res = await widget.SqlUtils.inserBook(_BookTemp);
+
+        setState(() {
+          _saveres = res.toString();
+        });
+      }
+
+  }
 
   Widget _getimage() {
     return new Image.asset(
       'assets/images/diary-b.png',
-      height: 110.195,//0.036
+      height: 110.195, //0.036
       width: 78.66,
       fit: BoxFit.fill,
     );
@@ -98,7 +132,7 @@ class _addbookState extends State<addbookpage> {
         leading: IconButton(
             icon: Icon(
               Icons.arrow_back,
-              color: _defulcolor,
+              color: widget.ColorDeful,
             ),
             onPressed: () {
               Navigator.pop(context);
@@ -106,13 +140,13 @@ class _addbookState extends State<addbookpage> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.refresh),
-            color: _defulcolor,
+            color: widget.ColorDeful,
             onPressed: () {},
           ),
           IconButton(
             icon: Icon(Icons.done),
-            color: _defulcolor,
-            onPressed: () => {_save(), Navigator.pop(context)},
+            color: widget.ColorDeful,
+            onPressed: () => {_save(), },//Navigator.pop(context)},
           ),
         ],
         backgroundColor: Colors.white,
@@ -127,20 +161,19 @@ class _addbookState extends State<addbookpage> {
               padding: EdgeInsets.all(10),
               constraints: BoxConstraints(
                   //子部件最小高度
-                 // minHeight: 136,
-                  minWidth: 150
-              ),
+                  // minHeight: 136,
+                  minWidth: 150),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15.0),
                   border: Border.all(
-                    color: _defulcolor,
+                    color: widget.ColorDeful,
                     width: 1,
                   )),
               child: new Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   _getimage(),
-                  Text(_title),
+                  Text(_Title),
                 ],
               ),
             ),
@@ -150,7 +183,6 @@ class _addbookState extends State<addbookpage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-
                     Text(
                       "本子类型：",
                       style: TextStyle(fontSize: 16),
@@ -162,7 +194,7 @@ class _addbookState extends State<addbookpage> {
                       ),
                       items: _getDdmItem(),
                       onChanged: _changeType,
-                      value: _selectvalue,
+                      value: _Type,
                     ),
                   ],
                 )),
@@ -171,14 +203,15 @@ class _addbookState extends State<addbookpage> {
               child: TextField(
                 maxLength: 20,
                 //光标
-                cursorColor: _defulcolor,
+                cursorColor: widget.ColorDeful,
                 // cursorWidth: 10,
                 style: TextStyle(fontSize: 16),
                 keyboardType: TextInputType.text,
                 maxLines: null,
                 decoration: InputDecoration(
                   focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: _defulcolor, width: 2)),
+                      borderSide:
+                          BorderSide(color: widget.ColorDeful, width: 2)),
                   contentPadding: EdgeInsets.all(5.0),
                   // icon: Icon(Icons.title),
                   labelText: '请输入名称',
@@ -198,12 +231,12 @@ class _addbookState extends State<addbookpage> {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10.0),
                     border: Border.all(
-                      color: _defulcolor,
+                      color: widget.ColorDeful,
                       width: 1,
                     )),
                 child: //输入内容
                     TextField(
-                  cursorColor: _defulcolor,
+                  cursorColor: widget.ColorDeful,
                   cursorWidth: 2,
                   style: TextStyle(fontSize: 15),
                   maxLines: null,
@@ -238,6 +271,8 @@ class _addbookState extends State<addbookpage> {
                   ),
                   onChanged: _changeContext,
                 )),
+            Text(_saveres),
+            Text(widget.SqlUtils.createres),
           ],
         ),
       ),

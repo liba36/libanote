@@ -32,7 +32,7 @@ class _diarylistState extends State<diarylistpage> {
   _getDiaryList() async {
     _listcard.clear();
     List<diarycard> temlistcard = new List();
-    List<Map> res = await widget._sqlhlper.getDiaryNote();
+    List<Map> res = await widget._sqlhlper.getDiary();
     if (res.length > 0) {
       for (int i = 0; i < res.length; i++) {
         Map h = res[i];
@@ -51,7 +51,7 @@ class _diarylistState extends State<diarylistpage> {
 
   Future<Null> _refresh() async {
     setState(() {
-      _countdiary = -2;
+      _countdiary = -1;
     });
     _getDiaryList();
     return;
@@ -85,11 +85,7 @@ class _diarylistState extends State<diarylistpage> {
       return new ListView(
         children: _listcard,
       );
-    } else if (_countdiary == -2) {
-      return new Container(
-          //child: Text("正在刷新...")
-          );
-    } else {
+    }  else {
       return new Padding(
         padding: EdgeInsets.all(200),
         child: CupertinoActivityIndicator(),

@@ -4,7 +4,6 @@ import 'package:liba_note/model/diary.dart';
 class diarycard extends StatelessWidget {
   diary _diary;
   diarycard(this._diary);
-
   Widget build(BuildContext context) {
     return new Container(
       margin: EdgeInsets.only(top: 10),

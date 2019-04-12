@@ -105,7 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Navigator.push(
         context,
         new MaterialPageRoute(
-            // builder: (context) => new booklistpage(),
+             builder: (context) => new booklistpage(),
             ));
   }
 
@@ -138,7 +138,6 @@ class _MyHomePageState extends State<MyHomePage> {
       });
     }
   }
-
   @override
   Widget build(BuildContext context) {
     //添加底部tab
