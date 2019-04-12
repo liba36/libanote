@@ -8,7 +8,9 @@ class editdiarypage extends StatefulWidget {
   String i1 = "";
   String i2 = "";
   Color defulcolor = Color.fromRGBO(74, 169, 170, 1);
-  editdiarypage(this.i1, this.i2, this._sqlhlper, this.defulcolor);
+
+  int BookId;
+  editdiarypage(this.i1, this.i2, this._sqlhlper, this.defulcolor,this.BookId);
   State<StatefulWidget> createState() {
     return new _editdiaryState(i1, i2, defulcolor);
   }
@@ -40,7 +42,7 @@ class _editdiaryState extends State<editdiarypage> {
 
   Future _save() async {
     var _nowtime = DateTime.now();
-    diary _temdiary = new diary(_title, _context, _nowtime, _nowtime);
+    diary _temdiary = new diary(_title, _context,widget.BookId, _nowtime, _nowtime);
     var res = await widget._sqlhlper.insertDiary(_temdiary);
     setState(() {
       _createres = res.toString();

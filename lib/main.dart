@@ -68,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
   _getPage(int index) {
     switch (index) {
       case 0:
-        return new diarylistpage(widget._sqlhlper);
+       // return new diarylistpage(widget._sqlhlper);
       case 1:
 
       case 4:
@@ -78,8 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
         _selectedDrawerIndex = 0;
         break;
       case 2:
-        return new editdiarypage(
-            "touyici", "dierci", widget._sqlhlper, _defulcolor);
+      //  return new editdiarypage(            "touyici", "dierci", widget._sqlhlper, _defulcolor);
       default:
         _selectedDrawerIndex = 0;
         break;
@@ -96,8 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Navigator.push(
         context,
         new MaterialPageRoute(
-          builder: (context) => new editdiarypage(
-              "touyici", "dierci", widget._sqlhlper, _defulcolor),
+     //     builder: (context) => new editdiarypage(              "touyici", "dierci", widget._sqlhlper, _defulcolor),
         ));
   }
 

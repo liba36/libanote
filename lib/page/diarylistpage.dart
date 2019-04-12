@@ -9,8 +9,8 @@ import 'dart:io';
 
 class diarylistpage extends StatefulWidget {
   sqlhelper _sqlhlper;
-
-  diarylistpage(this._sqlhlper);
+  int BookId;
+  diarylistpage(this._sqlhlper,this.BookId);
 
   State<StatefulWidget> createState() {
     return new _diarylistState();
@@ -22,6 +22,7 @@ class _diarylistState extends State<diarylistpage> {
   Color _defaultcolor = Color.fromRGBO(74, 169, 170, 1);
   List<Widget> _listcard = new List();
 
+
   @override
   initState() {
     super.initState();
@@ -32,11 +33,11 @@ class _diarylistState extends State<diarylistpage> {
   _getDiaryList() async {
     _listcard.clear();
     List<diarycard> temlistcard = new List();
-    List<Map> res = await widget._sqlhlper.getDiary();
+    List<Map> res = await widget._sqlhlper.getDiary(widget.BookId);
     if (res.length > 0) {
       for (int i = 0; i < res.length; i++) {
         Map h = res[i];
-        diary temdiary = new diary(h["title"], h["context"],
+        diary temdiary = new diary(h["title"], h["context"],h["bookid"],
             DateTime.parse(h["createtime"]), DateTime.parse(h["edittime"]));
         diarycard temdiarycard = new diarycard(temdiary);
         temlistcard.add(temdiarycard);
@@ -62,7 +63,7 @@ class _diarylistState extends State<diarylistpage> {
         context,
         new MaterialPageRoute(
           builder: (context) => new editdiarypage(
-              "touyici", "dierci", widget._sqlhlper, _defaultcolor),
+              "touyici", "dierci", widget._sqlhlper, _defaultcolor,widget.BookId),
         ));
   }
 

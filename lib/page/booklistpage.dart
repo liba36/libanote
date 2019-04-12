@@ -59,11 +59,16 @@ class _booklistState extends State<booklistpage> {
 
   _getbody(){
     if (_CountBook >= 0) {
-     return       Container(
+     return
+       Container(
            padding: EdgeInsets.only(left: 10, right: 10, top: 10),
            child:Column(
              children: <Widget>[
-               Text("$_CountBook  ddfssdfas"),
+              Container(
+                margin: EdgeInsets.only(bottom: 6,top: 6),
+                child:   Text("$_CountBook 个本子",style: TextStyle(
+                    color: Color.fromRGBO(74, 169, 170, 1), fontSize: 12)),
+              ),
                Expanded(
                  flex: 1,
                  child:   RefreshIndicator(
@@ -141,10 +146,10 @@ class _booklistState extends State<booklistpage> {
       backgroundColor: Colors.white,
       appBar: PreferredSize(
           child: new AppBar(
-            backgroundColor: _ColorDeful,
+            backgroundColor: Colors.white,
             title: Icon(
               Icons.four_k,
-              color: Colors.white,
+              color:_ColorDeful,
             ),
             elevation: 0,
           ),
@@ -158,9 +163,10 @@ class _booklistState extends State<booklistpage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
-        color: _ColorDeful, //底部工具栏的颜色。
+        color: Colors.white, //底部工具栏的颜色。
         //设置底部栏的形状
         shape: CircularNotchedRectangle(),
+        elevation: 36,
         child: Row(
           //里边可以放置大部分Widget，让我们随心所欲的设计底栏
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -169,13 +175,13 @@ class _booklistState extends State<booklistpage> {
             IconButton(
               icon: Icon(
                 Icons.view_carousel,
-                color: Colors.white,
+                color: _ColorDeful,
               ),
-              color: Colors.white,
+              //color: Colors.white,
             ),
             IconButton(
-              icon: Icon(Icons.settings, color: Colors.white),
-              color: Colors.white,
+              icon: Icon(Icons.settings, color: _ColorDeful),
+              //color: _ColorDeful,
             ),
           ],
         ),

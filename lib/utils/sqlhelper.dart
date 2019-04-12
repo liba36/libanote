@@ -61,6 +61,7 @@ class sqlhelper {
         id_d integer primary key autoincrement, 
         title text, 
         context text,
+        bookid integer,
         createtime text,
         edittime text)''');
     } catch (e) {
@@ -84,9 +85,9 @@ class sqlhelper {
     return result;
   }
 
-  Future<List> getDiary() async {
+  Future<List> getDiary(int bookid) async {
     Database database = await db;
-    var result = await database.rawQuery("select * from diary");
+    var result = await database.query('diary',where: '"bookid"=?',whereArgs: [bookid]);
     return result;
   }
 

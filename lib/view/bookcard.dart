@@ -20,7 +20,8 @@ class _bookcarState extends State<bookcard> {
     Navigator.push(
         context,
         new MaterialPageRoute(
-            builder: (context) => new diarylistpage(widget.SqlUtils)));
+            builder: (context) =>
+                new diarylistpage(widget.SqlUtils, widget.BookInstance.id)));
   }
 
   @override
@@ -34,17 +35,26 @@ class _bookcarState extends State<bookcard> {
         return new GestureDetector(
             onTap: _editdiarypage,
             // onLongPress: _showdi,
-            child: Column(
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.all(2),
-                  child: new Image.asset(
-                    'assets/images/diary-b.png',
-                    fit: BoxFit.fill,
+            child: Card(
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.all(2),
+                    child: new Image.asset(
+                      'assets/images/diary-b.png',
+                      fit: BoxFit.fill,
+                    ),
                   ),
-                ),
-                Text(widget.BookInstance.name),
-              ],
+                  Container(
+                    margin: EdgeInsets.only(left: 6),
+                    child: Text(
+                      widget.BookInstance.name,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
             ));
       default:
         return new GestureDetector(
@@ -80,30 +90,6 @@ class _bookcarState extends State<bookcard> {
 
   @override
   Widget build(BuildContext context) {
-    return new GestureDetector(
-        onTap: _editdiarypage,
-        // onLongPress: _showdi,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.all(2),
-              child: new Image.asset(
-                'assets/images/diary-b.png',
-                fit: BoxFit.fill,
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(2),
-              child: Text(
-                widget.BookInstance.name,
-                // softWrap: true,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-          ],
-        ));
-    ;
+    return _getitem();
   }
 }

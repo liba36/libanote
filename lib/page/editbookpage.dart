@@ -22,7 +22,7 @@ class _editbookState extends State<editbookpage> {
   int _Type = 0;
   String _Context = "";
   int _Image = -1;
-  String _saveres = "werwrewrew";
+
   List<DropdownMenuItem> _getDdmItem() {
     final List<DropdownMenuItem> _DdmItem = List();
     final DropdownMenuItem _item1 = DropdownMenuItem(
@@ -96,18 +96,10 @@ class _editbookState extends State<editbookpage> {
   Future _save() async{
     if(widget.Type == 0)
       {
-        setState(() {
-          _saveres = "begin";
-        });
         var _NowTime = DateTime.now();
         book _BookTemp = new book(_Title, _Type, _Context, _Image, _NowTime, _NowTime);
         var res = await widget.SqlUtils.inserBook(_BookTemp);
-
-        setState(() {
-          _saveres = res.toString();
-        });
       }
-
   }
 
   Widget _getimage() {
@@ -146,7 +138,7 @@ class _editbookState extends State<editbookpage> {
           IconButton(
             icon: Icon(Icons.done),
             color: widget.ColorDeful,
-            onPressed: () => {_save(), },//Navigator.pop(context)},
+            onPressed: () => {_save(),Navigator.pop(context)},
           ),
         ],
         backgroundColor: Colors.white,
@@ -271,8 +263,7 @@ class _editbookState extends State<editbookpage> {
                   ),
                   onChanged: _changeContext,
                 )),
-            Text(_saveres),
-            Text(widget.SqlUtils.createres),
+
           ],
         ),
       ),
