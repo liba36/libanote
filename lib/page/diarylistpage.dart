@@ -10,7 +10,8 @@ import 'dart:io';
 class diarylistpage extends StatefulWidget {
   sqlhelper _sqlhlper;
   int BookId;
-  diarylistpage(this._sqlhlper,this.BookId);
+
+  diarylistpage(this._sqlhlper, this.BookId);
 
   State<StatefulWidget> createState() {
     return new _diarylistState();
@@ -21,7 +22,6 @@ class _diarylistState extends State<diarylistpage> {
   int _countdiary = -1;
   Color _defaultcolor = Color.fromRGBO(74, 169, 170, 1);
   List<Widget> _listcard = new List();
-
 
   @override
   initState() {
@@ -37,9 +37,9 @@ class _diarylistState extends State<diarylistpage> {
     if (res.length > 0) {
       for (int i = 0; i < res.length; i++) {
         Map h = res[i];
-        diary temdiary = new diary(h["title"], h["context"],h["bookid"],
+        diary temdiary = new diary(h["title"], h["context"], h["bookid"],
             DateTime.parse(h["createtime"]), DateTime.parse(h["edittime"]));
-        diarycard temdiarycard = new diarycard(temdiary);
+        diarycard temdiarycard = new diarycard(temdiary, _defaultcolor);
         temlistcard.add(temdiarycard);
       }
     }
@@ -62,31 +62,36 @@ class _diarylistState extends State<diarylistpage> {
     Navigator.push(
         context,
         new MaterialPageRoute(
-          builder: (context) => new editdiarypage(
-              "touyici", "dierci", widget._sqlhlper, _defaultcolor,widget.BookId),
+          builder: (context) => new editdiarypage("touyici", "dierci",
+              widget._sqlhlper, _defaultcolor, widget.BookId),
         ));
   }
 
   _getbody() {
     if (_countdiary >= 0) {
-      _listcard.insert(
-          0,
+      return
+          // color: Colors.red,
+          Column(
+        children: <Widget>[
           Container(
-              //color: Colors.blueGrey,
-              child: new Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                "$_countdiary 条记录",
-                style: TextStyle(
-                    color: Color.fromRGBO(74, 169, 170, 1), fontSize: 10),
-              ),
-            ],
-          )));
-      return new ListView(
-        children: _listcard,
+            alignment: Alignment.center,
+            child: Text(
+              "$_countdiary 条记录",
+              style: TextStyle(
+                  color: Color.fromRGBO(74, 169, 170, 1), fontSize: 10),
+            ),
+          ),
+          Expanded(
+              flex: 1,
+              child: new RefreshIndicator(
+                onRefresh: _refresh,
+                child: ListView(
+                  children: _listcard,
+                ),
+              ))
+        ],
       );
-    }  else {
+    } else {
       return new Padding(
         padding: EdgeInsets.all(200),
         child: CupertinoActivityIndicator(),
@@ -98,7 +103,6 @@ class _diarylistState extends State<diarylistpage> {
     return new Scaffold(
       backgroundColor: Colors.white,
       appBar: new AppBar(
-
         backgroundColor: Colors.white,
         leading: IconButton(
             icon: Icon(
@@ -110,11 +114,7 @@ class _diarylistState extends State<diarylistpage> {
             }),
         elevation: 0,
       ),
-      body: RefreshIndicator(
-        onRefresh: _refresh,
-        // color: Colors.red,
-        child: _getbody(),
-      ),
+      body: _getbody(),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color.fromRGBO(74, 169, 170, 1),
         child: Icon(Icons.add),
