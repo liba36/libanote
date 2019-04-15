@@ -17,30 +17,31 @@ class diarycard extends StatefulWidget {
 
 class _diarycardState extends State<diarycard> {
   // diarycard(this._diary);
-
-  _clik()
-  {
+  _clik() {
     Navigator.push(
-      context,
-      new MaterialPageRoute(builder: (context)=>new diaryviewpage(widget.ColorDeful,widget.DiaryInstance))
-    );
+        context,
+        new MaterialPageRoute(
+            builder: (context) =>
+                new diaryviewpage(widget.ColorDeful, widget.DiaryInstance)));
   }
 
   Widget build(BuildContext context) {
     return new GestureDetector(
       onTap: _clik,
-      child:  Card(
+      child: Card(
         elevation: 3,
         margin: EdgeInsets.all(8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
-              decoration: BoxDecoration(
-                color: widget.ColorDeful,
-                borderRadius:BorderRadius.only(topLeft: Radius.circular(4),topRight: Radius.circular(4)),
-              ),
-               // color: widget.ColorDeful,
+                decoration: BoxDecoration(
+                  color: widget.ColorDeful,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(4),
+                      topRight: Radius.circular(4)),
+                ),
+                // color: widget.ColorDeful,
                 alignment: Alignment.center,
                 //margin: EdgeInsets.all(3),
                 padding: EdgeInsets.only(top: 3, bottom: 3, left: 3, right: 3),
@@ -71,11 +72,18 @@ class _diarycardState extends State<diarycard> {
                 // mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text("字数："+widget.DiaryInstance.context.length.toString(),style:TextStyle(fontSize: 10,color: Color.fromRGBO(136, 136, 136, 1))),
-                  Text(widget.DiaryInstance.edittime.year.toString()+"/"
-                      +widget.DiaryInstance.edittime.month.toString()+"/"
-                      +widget.DiaryInstance.edittime.day.toString(),
-                    style: TextStyle(fontSize: 10,color: Color.fromRGBO(136, 136, 136, 1)),
+                  Text("字数：" + widget.DiaryInstance.context.length.toString(),
+                      style: TextStyle(
+                          fontSize: 10,
+                          color: Color.fromRGBO(136, 136, 136, 1))),
+                  Text(
+                    widget.DiaryInstance.edittime.year.toString() +
+                        "/" +
+                        widget.DiaryInstance.edittime.month.toString() +
+                        "/" +
+                        widget.DiaryInstance.edittime.day.toString(),
+                    style: TextStyle(
+                        fontSize: 10, color: Color.fromRGBO(136, 136, 136, 1)),
                   )
                 ],
               ),
