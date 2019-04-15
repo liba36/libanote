@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:liba_note/model/diary.dart';
+import 'package:liba_note/page/diaryviewpage.dart';
 
 class diarycard extends StatefulWidget {
   diary DiaryInstance;
@@ -19,7 +20,10 @@ class _diarycardState extends State<diarycard> {
 
   _clik()
   {
-
+    Navigator.push(
+      context,
+      new MaterialPageRoute(builder: (context)=>new diaryviewpage(widget.ColorDeful,widget.DiaryInstance))
+    );
   }
 
   Widget build(BuildContext context) {
@@ -27,13 +31,18 @@ class _diarycardState extends State<diarycard> {
       onTap: _clik,
       child:  Card(
         elevation: 3,
-        margin: EdgeInsets.all(10),
+        margin: EdgeInsets.all(8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
+              decoration: BoxDecoration(
                 color: widget.ColorDeful,
+                borderRadius:BorderRadius.only(topLeft: Radius.circular(4),topRight: Radius.circular(4)),
+              ),
+               // color: widget.ColorDeful,
                 alignment: Alignment.center,
+                //margin: EdgeInsets.all(3),
                 padding: EdgeInsets.only(top: 3, bottom: 3, left: 3, right: 3),
                 child: Text(
                   widget.DiaryInstance.title,
@@ -62,7 +71,7 @@ class _diarycardState extends State<diarycard> {
                 // mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text(widget.DiaryInstance.context.length.toString(),style:TextStyle(fontSize: 10,color: Color.fromRGBO(136, 136, 136, 1))),
+                  Text("字数："+widget.DiaryInstance.context.length.toString(),style:TextStyle(fontSize: 10,color: Color.fromRGBO(136, 136, 136, 1))),
                   Text(widget.DiaryInstance.edittime.year.toString()+"/"
                       +widget.DiaryInstance.edittime.month.toString()+"/"
                       +widget.DiaryInstance.edittime.day.toString(),
