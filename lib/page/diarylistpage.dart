@@ -8,7 +8,6 @@ import 'package:liba_note/utils/mulselectevent.dart';
 import 'package:flutter/services.dart';
 import 'dart:io';
 
-
 class diarylistpage extends StatefulWidget {
   sqlhelper _sqlhlper;
   int BookId;
@@ -25,17 +24,36 @@ class _diarylistState extends State<diarylistpage> {
   Color _defaultcolor = Color.fromRGBO(74, 169, 170, 1);
   List<Widget> _listcard = new List();
   bool _CheckBoxDisplay = false;
+  List<int> _DiarySelect = new List();
+  bool _RefreshStatu = false;
 
   @override
   initState() {
     super.initState();
     _getDiaryList();
+    eventBus
+        .on<muldiaryselect>()
+        .listen((muldiaryselect onData) => _setCheckBoxDisplay(onData));
+    eventBus
+        .on<diaryslected>()
+        .listen((diaryslected onData) => _setDiarySelect(onData));
   }
 
-  _longclik() {
-    eventBus.fire(new muldiaryselect(true));
+  _setDiarySelect(diaryslected onData) {
+    if (onData.statu == true) {
+      setState(() {
+        _DiarySelect.add(onData.id);
+      });
+    } else {
+      setState(() {
+        _DiarySelect.remove(onData.id);
+      });
+    }
+  }
+
+  _setCheckBoxDisplay(muldiaryselect onData) {
     setState(() {
-      this._CheckBoxDisplay = true;
+      this._CheckBoxDisplay = onData.MulSelectEndable;
     });
   }
 
@@ -47,23 +65,32 @@ class _diarylistState extends State<diarylistpage> {
     if (res.length > 0) {
       for (int i = 0; i < res.length; i++) {
         Map h = res[i];
-        diary temdiary = new diary(h["title"], h["context"], h["bookid"],
-            DateTime.parse(h["createtime"]), DateTime.parse(h["edittime"]));
-        diarycard temdiarycard =
-            new diarycard(temdiary, _defaultcolor, () => _longclik());
+        diary temdiary = new diary(
+            h["id"],
+            h["title"],
+            h["context"],
+            h["bookid"],
+            DateTime.parse(h["createtime"]),
+            DateTime.parse(h["edittime"]));
+        diarycard temdiarycard = new diarycard(
+          temdiary,
+          _defaultcolor,
+        );
         temlistcard.add(temdiarycard);
       }
     }
     setState(() {
       _listcard.addAll(temlistcard);
       _countdiary = res.length;
+      _RefreshStatu = true;
     });
     temlistcard.clear();
   }
 
   Future<Null> _refresh() async {
     setState(() {
-      _countdiary = -1;
+      _countdiary = 0;
+      _RefreshStatu = false;
     });
     _getDiaryList();
     return;
@@ -80,19 +107,29 @@ class _diarylistState extends State<diarylistpage> {
     });
   }
 
-  _getbody(int countdiary) {
-    if (countdiary >= 0) {
+  _getListText(statu) {
+    if (statu == false) {
+      return Text(
+        "$_countdiary 条记录",
+        style: TextStyle(color: Color.fromRGBO(74, 169, 170, 1), fontSize: 10),
+      );
+    } else {
+      return Text(
+        "已经选中 " + _DiarySelect.length.toString() + " 条记录",
+        style: TextStyle(color: Color.fromRGBO(74, 169, 170, 1), fontSize: 10),
+      );
+    }
+  }
+
+  _getbody(bool statu) {
+    if (statu == true) {
       return
           // color: Colors.red,
           Column(
         children: <Widget>[
           Container(
             alignment: Alignment.center,
-            child: Text(
-              "$countdiary 条记录",
-              style: TextStyle(
-                  color: Color.fromRGBO(74, 169, 170, 1), fontSize: 10),
-            ),
+            child: _getListText(_CheckBoxDisplay),
           ),
           Expanded(
               flex: 1,
@@ -135,58 +172,48 @@ class _diarylistState extends State<diarylistpage> {
       return PreferredSize(
           child: new AppBar(
             backgroundColor: Colors.white,
-            leading: IconButton(
-                icon: Icon(
-                  Icons.ac_unit,
-                  color: Color.fromRGBO(74, 169, 170, 1),
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
-                }),
+            leading: RawMaterialButton(
+              onPressed: _back,
+              child: Text(
+                "取消",
+                style: TextStyle(fontSize: 15, color: _defaultcolor),
+              ),
+            ),
             elevation: 0,
           ),
           preferredSize: Size.fromHeight(36));
     }
   }
 
-  Future<bool> _back()
-  {
-    if(_CheckBoxDisplay == true) {
-      setState(() {
-        _CheckBoxDisplay = false;
-      });
+  Future<bool> _back() {
+    if (_CheckBoxDisplay == true) {
       eventBus.fire(new muldiaryselect(false));
+      _DiarySelect.clear();
+    } else {
+      Navigator.pop(context);
     }
-    else
-      {
-       Navigator.pop(context);
-      }
   }
 
-  _getFloatButtopn(bool statu)
-  {
-    if(statu == false)
-      {
-        return  FloatingActionButton(
-          backgroundColor: Color.fromRGBO(74, 169, 170, 1),
-          child: Icon(Icons.add),
-          onPressed: _addDiaryPage,
-        );
-      }
-    else
-      {
-        return null;
-      }
+  _getFloatButtopn(bool statu) {
+    if (statu == false) {
+      return FloatingActionButton(
+        backgroundColor: Color.fromRGBO(74, 169, 170, 1),
+        child: Icon(Icons.add),
+        onPressed: _addDiaryPage,
+      );
+    } else {
+      return null;
+    }
   }
+
   Widget build(BuildContext context) {
     return new WillPopScope(
         child: Scaffold(
           backgroundColor: Colors.white,
           appBar: _getappbar(_CheckBoxDisplay),
-          body: _getbody(_countdiary),
-          floatingActionButton:_getFloatButtopn(_CheckBoxDisplay),
+          body: _getbody(_RefreshStatu),
+          floatingActionButton: _getFloatButtopn(_CheckBoxDisplay),
         ),
-        onWillPop: _back
-    );
+        onWillPop: _back);
   }
 }

@@ -7,11 +7,7 @@ import 'package:liba_note/utils/mulselectevent.dart';
 class diarycard extends StatefulWidget {
   diary DiaryInstance;
   Color ColorDeful;
-  final CallBack;
-
-  bool Checked;
-
-  diarycard(this.DiaryInstance, this.ColorDeful, this.CallBack);
+  diarycard(this.DiaryInstance, this.ColorDeful);
 
   @override
   State<StatefulWidget> createState() {
@@ -56,14 +52,18 @@ class _diarycardState extends State<diarycard> {
       setState(() {
         _Checked = !_Checked;
       });
+      eventBus.fire(diaryslected(_Checked, widget.DiaryInstance.id));
     }
   }
 
   _longclik() {
-    widget.CallBack();
-    setState(() {
-      _Checked = true;
-    });
+    if(_CheckBoxDisplay == false) {
+      eventBus.fire(muldiaryselect(true));
+      setState(() {
+        _Checked = true;
+      });
+      eventBus.fire(diaryslected(_Checked, widget.DiaryInstance.id));
+    }
   }
 
   _getInterval() {

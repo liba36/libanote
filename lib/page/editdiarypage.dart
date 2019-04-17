@@ -42,7 +42,7 @@ class _editdiaryState extends State<editdiarypage> {
 
   Future _save() async {
     var _nowtime = DateTime.now();
-    diary _temdiary = new diary(_title, _context,widget.BookId, _nowtime, _nowtime);
+    diary _temdiary = new diary(-1,_title, _context,widget.BookId, _nowtime, _nowtime);
     var res = await widget._sqlhlper.insertDiary(_temdiary);
     setState(() {
       _createres = res.toString();

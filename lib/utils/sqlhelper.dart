@@ -58,7 +58,7 @@ class sqlhelper {
     try {
       await db.execute('''
         CREATE TABLE diary (
-        id_d integer primary key autoincrement, 
+        id integer primary key autoincrement, 
         title text, 
         context text,
         bookid integer,
@@ -67,13 +67,14 @@ class sqlhelper {
     } catch (e) {
       _createRes = "create diary table error : " + e.toString();
     }
+    //图片
     try {
       await db.execute('''
-        CREATE TABLE images_d (
-        id_d integer, 
+        CREATE TABLE images (
+        id integer, 
         image text,
-        foreign key(id_d) references diary(id_d) on delete cascade on update cascade
-        )''');
+        type integer)''');
+      // foreign key(id) references diary(id) on delete cascade on update cascade
     } catch (e) {
       _createRes += "create images table error : " + e.toString();
     }
