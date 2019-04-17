@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:liba_note/model/diary.dart';
 import 'package:liba_note/page/diaryviewpage.dart';
+import 'package:liba_note/utils/mulselectevent.dart';
+
 
 class diarycard extends StatefulWidget {
   diary DiaryInstance;
   Color ColorDeful;
   final CallBack;
-  bool CheckBoxDisplay;
+
   bool Checked;
 
-  diarycard(this.DiaryInstance, this.ColorDeful,this.CallBack);
+  diarycard(this.DiaryInstance, this.ColorDeful, this.CallBack);
 
   @override
   State<StatefulWidget> createState() {
@@ -20,20 +22,108 @@ class diarycard extends StatefulWidget {
 
 class _diarycardState extends State<diarycard> {
   // diarycard(this._diary);
-  _clik() {
-    Navigator.push(
-        context,
-        new MaterialPageRoute(
-            builder: (context) =>
-                new diaryviewpage(widget.ColorDeful, widget.DiaryInstance)));
+  bool _CheckBoxDisplay = false;
+  bool _Checked = false;
+
+  @override
+  initState() {
+    super.initState();
+    eventBus.on<muldiaryselect>().listen(
+        (muldiaryselect statu) => _setCheckBoxDisplay(statu.MulSelectEndable));
   }
 
-  _longclik()
-  {
+  _setCheckBoxDisplay(bool statu) {
+    if (statu == true) {
+      setState(() {
+        _CheckBoxDisplay = statu;
+      });
+    } else {
+      setState(() {
+        _CheckBoxDisplay = statu;
+        _Checked = false;
+      });
+    }
+  }
+
+  _clik() {
+    if (_CheckBoxDisplay == false) {
+      Navigator.push(
+          context,
+          new MaterialPageRoute(
+              builder: (context) =>
+                  new diaryviewpage(widget.ColorDeful, widget.DiaryInstance)));
+    } else {
+      setState(() {
+        _Checked = !_Checked;
+      });
+    }
+  }
+
+  _longclik() {
     widget.CallBack();
     setState(() {
-      widget.ColorDeful = Colors.red;
+      _Checked = true;
     });
+  }
+
+  _getInterval() {
+    if (_CheckBoxDisplay == false) {
+      return EdgeInsets.all(8);
+    } else {
+      return EdgeInsets.only(top: 10, bottom: 10, right: 15, left: 15);
+    }
+  }
+
+  _getColor(int type) //0 标题栏颜色 1 标题字体颜色 2 内容栏颜色 3 内容字体颜色 4 日期以及字数颜色
+  {
+    if (_CheckBoxDisplay == false) {
+      switch (type) {
+        case 0:
+          return widget.ColorDeful;
+        case 1:
+          return Colors.white;
+        case 2:
+          return Colors.white;
+        case 3:
+          return Color.fromRGBO(122, 123, 122, 1);
+        case 4:
+          return Color.fromRGBO(136, 136, 136, 1);
+        default:
+          return widget.ColorDeful;
+      }
+    } else {
+      if (_Checked == false) {
+        switch (type) {
+          case 0:
+            return Colors.grey;
+          case 1:
+            return Colors.white;
+          case 2:
+            return Colors.white;
+          case 3:
+            return Colors.grey;
+          case 4:
+            return Color.fromRGBO(96, 96, 96, 1);
+          default:
+            return widget.ColorDeful;
+        }
+      } else {
+        switch (type) {
+          case 0:
+            return Colors.red;
+          case 1:
+            return Colors.white;
+          case 2:
+            return Colors.white;
+          case 3:
+            return Colors.grey;
+          case 4:
+            return Color.fromRGBO(96, 96, 96, 1);
+          default:
+            return widget.ColorDeful;
+        }
+      }
+    }
   }
 
   Widget build(BuildContext context) {
@@ -42,31 +132,30 @@ class _diarycardState extends State<diarycard> {
       onLongPress: _longclik,
       child: Card(
         elevation: 3,
-        margin: EdgeInsets.all(8),
+        margin: _getInterval(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
                 decoration: BoxDecoration(
-                  color: widget.ColorDeful,
+                  color: _getColor(0),
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(4),
                       topRight: Radius.circular(4)),
                 ),
-                // color: widget.ColorDeful,
                 alignment: Alignment.center,
-                //margin: EdgeInsets.all(3),
                 padding: EdgeInsets.only(top: 3, bottom: 3, left: 3, right: 3),
                 child: Text(
                   widget.DiaryInstance.title,
-                  style: TextStyle(fontSize: 18, color: Colors.white),
+                  style: TextStyle(fontSize: 18, color: _getColor(1)),
                 )),
             Container(
+              color: _getColor(2),
               margin: EdgeInsets.all(5),
               child: Text(
                 widget.DiaryInstance.context,
                 style: TextStyle(
-                    color: Color.fromRGBO(122, 123, 122, 1),
+                    color: _getColor(3),
                     fontSize: 15,
                     wordSpacing: 1.36,
                     letterSpacing: 0.36,
@@ -85,17 +174,14 @@ class _diarycardState extends State<diarycard> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text("字数：" + widget.DiaryInstance.context.length.toString(),
-                      style: TextStyle(
-                          fontSize: 10,
-                          color: Color.fromRGBO(136, 136, 136, 1))),
+                      style: TextStyle(fontSize: 10, color: _getColor(4))),
                   Text(
                     widget.DiaryInstance.edittime.year.toString() +
                         "/" +
                         widget.DiaryInstance.edittime.month.toString() +
                         "/" +
                         widget.DiaryInstance.edittime.day.toString(),
-                    style: TextStyle(
-                        fontSize: 10, color: Color.fromRGBO(136, 136, 136, 1)),
+                    style: TextStyle(fontSize: 10, color: _getColor(4)),
                   )
                 ],
               ),

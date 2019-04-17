@@ -24,7 +24,7 @@ class _diarylistState extends State<diarylistpage> {
   int _countdiary = -1;
   Color _defaultcolor = Color.fromRGBO(74, 169, 170, 1);
   List<Widget> _listcard = new List();
-  bool _LongPressStatu = false;
+  bool _CheckBoxDisplay = false;
 
   @override
   initState() {
@@ -33,9 +33,9 @@ class _diarylistState extends State<diarylistpage> {
   }
 
   _longclik() {
-    eventBus.fire(true);
+    eventBus.fire(new muldiaryselect(true));
     setState(() {
-      this._LongPressStatu = true;
+      this._CheckBoxDisplay = true;
     });
   }
 
@@ -151,22 +151,40 @@ class _diarylistState extends State<diarylistpage> {
 
   Future<bool> _back()
   {
-    setState(() {
-      _LongPressStatu = false;
-    });
+    if(_CheckBoxDisplay == true) {
+      setState(() {
+        _CheckBoxDisplay = false;
+      });
+      eventBus.fire(new muldiaryselect(false));
+    }
+    else
+      {
+       Navigator.pop(context);
+      }
   }
 
+  _getFloatButtopn(bool statu)
+  {
+    if(statu == false)
+      {
+        return  FloatingActionButton(
+          backgroundColor: Color.fromRGBO(74, 169, 170, 1),
+          child: Icon(Icons.add),
+          onPressed: _addDiaryPage,
+        );
+      }
+    else
+      {
+        return null;
+      }
+  }
   Widget build(BuildContext context) {
     return new WillPopScope(
         child: Scaffold(
           backgroundColor: Colors.white,
-          appBar: _getappbar(_LongPressStatu),
+          appBar: _getappbar(_CheckBoxDisplay),
           body: _getbody(_countdiary),
-          floatingActionButton: FloatingActionButton(
-            backgroundColor: Color.fromRGBO(74, 169, 170, 1),
-            child: Icon(Icons.add),
-            onPressed: _addDiaryPage,
-          ),
+          floatingActionButton:_getFloatButtopn(_CheckBoxDisplay),
         ),
         onWillPop: _back
     );
