@@ -130,7 +130,9 @@ class _booklistState extends State<booklistpage> {
         context,
         new MaterialPageRoute(
           builder: (context) => new editbookpage(0, _SqlUtils, _ColorDeful),
-        ));
+        )).then((data){
+          _refresh();
+    });
   }
 
   Future<Null> _refresh() async {

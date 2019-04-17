@@ -5,8 +5,11 @@ import 'package:liba_note/page/diaryviewpage.dart';
 class diarycard extends StatefulWidget {
   diary DiaryInstance;
   Color ColorDeful;
+  final CallBack;
+  bool CheckBoxDisplay;
+  bool Checked;
 
-  diarycard(this.DiaryInstance, this.ColorDeful);
+  diarycard(this.DiaryInstance, this.ColorDeful,this.CallBack);
 
   @override
   State<StatefulWidget> createState() {
@@ -25,9 +28,18 @@ class _diarycardState extends State<diarycard> {
                 new diaryviewpage(widget.ColorDeful, widget.DiaryInstance)));
   }
 
+  _longclik()
+  {
+    widget.CallBack();
+    setState(() {
+      widget.ColorDeful = Colors.red;
+    });
+  }
+
   Widget build(BuildContext context) {
     return new GestureDetector(
       onTap: _clik,
+      onLongPress: _longclik,
       child: Card(
         elevation: 3,
         margin: EdgeInsets.all(8),
