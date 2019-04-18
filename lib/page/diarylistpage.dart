@@ -22,7 +22,7 @@ class diarylistpage extends StatefulWidget {
 class _diarylistState extends State<diarylistpage> {
   int _countdiary = -1;
   Color _defaultcolor = Color.fromRGBO(74, 169, 170, 1);
-  List<Widget> _listcard = new List();
+  List<diarycard> _listcard = new List();
   bool _CheckBoxDisplay = false;
   List<int> _DiarySelect = new List();
   bool _RefreshStatu = false;
@@ -52,15 +52,22 @@ class _diarylistState extends State<diarylistpage> {
   }
 
   _setCheckBoxDisplay(muldiaryselect onData) {
+    _DiarySelect.clear();
     setState(() {
       this._CheckBoxDisplay = onData.MulSelectEndable;
     });
+    for (int i = 0; i < _listcard.length; i++) {
+      _listcard[i].CheckBoxDisplay = onData.MulSelectEndable;
+      if (onData.MulSelectEndable == false) {
+        _listcard[i].Checked = false;
+      }
+    }
   }
 
   //获取日记列表
   _getDiaryList() async {
     _listcard.clear();
-    List<Widget> temlistcard = new List();
+    List<diarycard> temlistcard = new List();
     List<Map> res = await widget._sqlhlper.getDiary(widget.BookId);
     if (res.length > 0) {
       for (int i = 0; i < res.length; i++) {
@@ -72,10 +79,8 @@ class _diarylistState extends State<diarylistpage> {
             h["bookid"],
             DateTime.parse(h["createtime"]),
             DateTime.parse(h["edittime"]));
-        diarycard temdiarycard = new diarycard(
-          temdiary,
-          _defaultcolor,
-        );
+        diarycard temdiarycard =
+            new diarycard(temdiary, _defaultcolor, _CheckBoxDisplay);
         temlistcard.add(temdiarycard);
       }
     }
@@ -88,11 +93,13 @@ class _diarylistState extends State<diarylistpage> {
   }
 
   Future<Null> _refresh() async {
-    setState(() {
-      _countdiary = 0;
-      _RefreshStatu = false;
-    });
-    _getDiaryList();
+    if (_CheckBoxDisplay == false) {
+      setState(() {
+        _countdiary = 0;
+        _RefreshStatu = false;
+      });
+      _getDiaryList();
+    }
     return;
   }
 
@@ -121,6 +128,27 @@ class _diarylistState extends State<diarylistpage> {
     }
   }
 
+  _getListBuild(statu) {
+    if (_CheckBoxDisplay == false) {
+      return new RefreshIndicator(
+        onRefresh: _refresh,
+        child: ListView.builder(
+          itemCount: _listcard.length,
+          itemBuilder: (context, i) {
+            return _listcard[i];
+          },
+        ),
+      );
+    } else {
+      return ListView.builder(
+        itemCount: _listcard.length,
+        itemBuilder: (context, i) {
+          return _listcard[i];
+        },
+      );
+    }
+  }
+
   _getbody(bool statu) {
     if (statu == true) {
       return
@@ -132,16 +160,9 @@ class _diarylistState extends State<diarylistpage> {
             child: _getListText(_CheckBoxDisplay),
           ),
           Expanded(
-              flex: 1,
-              child: new RefreshIndicator(
-                onRefresh: _refresh,
-                child: ListView.builder(
-                  itemCount: _listcard.length,
-                  itemBuilder: (context, i) {
-                    return _listcard[i];
-                  },
-                ),
-              ))
+            flex: 1,
+            child: _getListBuild(_CheckBoxDisplay),
+          )
         ],
       );
     } else {
@@ -150,6 +171,19 @@ class _diarylistState extends State<diarylistpage> {
         child: CupertinoActivityIndicator(),
       );
     }
+  }
+
+  _delete()
+  {
+    for(int i =0;i<_DiarySelect.length;i++)
+      {
+        widget._sqlhlper.deleteDiary(_DiarySelect[i]);
+      }
+    setState(() {
+      _CheckBoxDisplay = false;
+      _DiarySelect.clear();
+    });
+    _refresh();
   }
 
   _getappbar(bool longpressstatu) {
@@ -180,6 +214,9 @@ class _diarylistState extends State<diarylistpage> {
               ),
             ),
             elevation: 0,
+            actions: <Widget>[
+              IconButton(icon: Icon(Icons.delete,color: _defaultcolor,), onPressed: _delete)
+            ],
           ),
           preferredSize: Size.fromHeight(36));
     }
@@ -188,7 +225,6 @@ class _diarylistState extends State<diarylistpage> {
   Future<bool> _back() {
     if (_CheckBoxDisplay == true) {
       eventBus.fire(new muldiaryselect(false));
-      _DiarySelect.clear();
     } else {
       Navigator.pop(context);
     }

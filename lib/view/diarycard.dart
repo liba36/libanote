@@ -7,7 +7,11 @@ import 'package:liba_note/utils/mulselectevent.dart';
 class diarycard extends StatefulWidget {
   diary DiaryInstance;
   Color ColorDeful;
-  diarycard(this.DiaryInstance, this.ColorDeful);
+
+  bool CheckBoxDisplay = false;
+  bool Checked = false;
+
+  diarycard(this.DiaryInstance, this.ColorDeful,this.CheckBoxDisplay);
 
   @override
   State<StatefulWidget> createState() {
@@ -18,31 +22,15 @@ class diarycard extends StatefulWidget {
 
 class _diarycardState extends State<diarycard> {
   // diarycard(this._diary);
-  bool _CheckBoxDisplay = false;
-  bool _Checked = false;
+
 
   @override
   initState() {
     super.initState();
-    eventBus.on<muldiaryselect>().listen(
-        (muldiaryselect statu) => _setCheckBoxDisplay(statu.MulSelectEndable));
-  }
-
-  _setCheckBoxDisplay(bool statu) {
-    if (statu == true) {
-      setState(() {
-        _CheckBoxDisplay = statu;
-      });
-    } else {
-      setState(() {
-        _CheckBoxDisplay = statu;
-        _Checked = false;
-      });
-    }
   }
 
   _clik() {
-    if (_CheckBoxDisplay == false) {
+    if ( widget.CheckBoxDisplay == false) {
       Navigator.push(
           context,
           new MaterialPageRoute(
@@ -50,24 +38,24 @@ class _diarycardState extends State<diarycard> {
                   new diaryviewpage(widget.ColorDeful, widget.DiaryInstance)));
     } else {
       setState(() {
-        _Checked = !_Checked;
+        widget. Checked = ! widget.Checked;
       });
-      eventBus.fire(diaryslected(_Checked, widget.DiaryInstance.id));
+      eventBus.fire(diaryslected( widget.Checked, widget.DiaryInstance.id));
     }
   }
 
   _longclik() {
-    if(_CheckBoxDisplay == false) {
+    if( widget.CheckBoxDisplay == false) {
       eventBus.fire(muldiaryselect(true));
       setState(() {
-        _Checked = true;
+        widget.Checked = true;
       });
-      eventBus.fire(diaryslected(_Checked, widget.DiaryInstance.id));
+      eventBus.fire(diaryslected( widget.Checked, widget.DiaryInstance.id));
     }
   }
 
   _getInterval() {
-    if (_CheckBoxDisplay == false) {
+    if ( widget.CheckBoxDisplay == false) {
       return EdgeInsets.all(8);
     } else {
       return EdgeInsets.only(top: 10, bottom: 10, right: 15, left: 15);
@@ -76,7 +64,7 @@ class _diarycardState extends State<diarycard> {
 
   _getColor(int type) //0 标题栏颜色 1 标题字体颜色 2 内容栏颜色 3 内容字体颜色 4 日期以及字数颜色
   {
-    if (_CheckBoxDisplay == false) {
+    if ( widget.CheckBoxDisplay == false) {
       switch (type) {
         case 0:
           return widget.ColorDeful;
@@ -92,7 +80,7 @@ class _diarycardState extends State<diarycard> {
           return widget.ColorDeful;
       }
     } else {
-      if (_Checked == false) {
+      if ( widget.Checked == false) {
         switch (type) {
           case 0:
             return Colors.grey;

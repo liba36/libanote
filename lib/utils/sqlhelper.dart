@@ -88,7 +88,14 @@ class sqlhelper {
 
   Future<List> getDiary(int bookid) async {
     Database database = await db;
-    var result = await database.query('diary',where: '"bookid"=?',whereArgs: [bookid]);
+    var result =
+        await database.query('diary', where: '"bookid"=?', whereArgs: [bookid]);
+    return result;
+  }
+
+  Future<int> deleteDiary(int id) async {
+    Database database = await db;
+    var result = await database.delete('diary', where: '"id"=?', whereArgs: [id]);
     return result;
   }
 
