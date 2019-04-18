@@ -99,6 +99,12 @@ class sqlhelper {
     return result;
   }
 
+  Future<int> updateDiary(diary di)async
+  {
+    Database database = await db;
+    var result = await database.update('diary',di.diaryTomap(),where: '"id"=?', whereArgs: [di.id]);
+  }
+
   Future<int> inserBook(book bo) async {
     Database database = await db;
     var result = database.insert("book", bo.bookTomap());

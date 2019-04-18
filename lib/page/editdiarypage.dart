@@ -2,64 +2,86 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:liba_note/model/diary.dart';
 import 'package:liba_note/utils/sqlhelper.dart';
+import 'package:liba_note/page/diarylistpage.dart';
 
 class editdiarypage extends StatefulWidget {
+  int Type; //0 edit 1 add
   sqlhelper _sqlhlper;
-  String i1 = "";
-  String i2 = "";
-  Color defulcolor = Color.fromRGBO(74, 169, 170, 1);
+  Color ColorDeful;
+  diary DiaryInstance;
 
-  int BookId;
-  editdiarypage(this.i1, this.i2, this._sqlhlper, this.defulcolor,this.BookId);
+  editdiarypage(this.Type, this._sqlhlper, this.ColorDeful, this.DiaryInstance);
+
   State<StatefulWidget> createState() {
-    return new _editdiaryState(i1, i2, defulcolor);
+    return new _editdiaryState();
   }
 }
 
 class _editdiaryState extends State<editdiarypage> {
-  String _createres = "";
-  String _path1 = "";
-  String _listdiary = "";
-
-  String _counter = "";
   String _context = "";
   String _title = "";
-  Color _deafulcolor = Color.fromRGBO(74, 169, 170, 1);
+  String _appbartitle = "";
 
-  _editdiaryState(this._createres, this._path1, this._deafulcolor);
+  @override
+  initState() {
+    super.initState();
+    _reset();
+  }
+
+  _reset() {
+    if (widget.Type == 0) {
+      setState(() {
+        _title = widget.DiaryInstance.title;
+        _context = widget.DiaryInstance.context;
+        _appbartitle = "编辑";
+      });
+    } else {
+      setState(() {
+        _title = "";
+        _context = "";
+        _appbartitle = "添加";
+      });
+    }
+  }
 
   _changetitle(String title) {
     _title = title;
   }
 
   _changecontext(String context) {
-    _context = context;
-    // _diary.context = context;
     setState(() {
-      _counter = context.length.toString();
+      _context = context;
     });
   }
 
   Future _save() async {
     var _nowtime = DateTime.now();
-    diary _temdiary = new diary(-1,_title, _context,widget.BookId, _nowtime, _nowtime);
-    var res = await widget._sqlhlper.insertDiary(_temdiary);
-    setState(() {
-      _createres = res.toString();
-    });
+    widget.DiaryInstance.title = _title;
+    widget.DiaryInstance.context = _context;
+    widget.DiaryInstance.edittime = _nowtime;
+    if (widget.Type == 1) {
+      widget.DiaryInstance.createtime = _nowtime;
+      widget._sqlhlper.insertDiary(widget.DiaryInstance);
+    } else {
+      widget._sqlhlper.updateDiary(widget.DiaryInstance);
+    }
+    Navigator.pop(context);
   }
 
   Widget build(BuildContext context) {
     return new Scaffold(
         backgroundColor: Color.fromRGBO(255, 255, 255, 1),
         appBar: new AppBar(
-          title: new Text('添加',style: TextStyle(color: Colors.black,fontSize: 18),),
+          title: new Text(
+            _appbartitle,
+            style: TextStyle(color: Colors.black, fontSize: 18),
+          ),
           backgroundColor: Colors.white,
           elevation: 0,
           leading: Builder(builder: (BuildContext context) {
             return IconButton(
               icon: const Icon(Icons.arrow_back_ios),
-              color: _deafulcolor,
+              color: widget.ColorDeful,
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -68,13 +90,14 @@ class _editdiaryState extends State<editdiarypage> {
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.refresh),
-              color: _deafulcolor, onPressed: () {},
+              color: widget.ColorDeful,
+              onPressed: _reset,
             ),
             IconButton(
               icon: Icon(Icons.done),
-              color: _deafulcolor,
-              onPressed: () => {_save(), Navigator.pop(context)},
-            ),            
+              color: widget.ColorDeful,
+              onPressed:_save,
+            ),
           ],
         ),
         body: SingleChildScrollView(
@@ -82,13 +105,13 @@ class _editdiaryState extends State<editdiarypage> {
             child: new Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                 //输入title
+                //输入title
                 Container(
                   margin: EdgeInsets.only(left: 5, right: 10),
                   child: TextField(
                     maxLength: 10,
                     //光标
-                    cursorColor: _deafulcolor,
+                    cursorColor: widget.ColorDeful,
                     // cursorWidth: 10,
                     style: TextStyle(fontSize: 16),
                     keyboardType: TextInputType.text,
@@ -96,7 +119,7 @@ class _editdiaryState extends State<editdiarypage> {
                     decoration: InputDecoration(
                       focusedBorder: UnderlineInputBorder(
                           borderSide:
-                              BorderSide(color: _deafulcolor, width: 2)),
+                              BorderSide(color: widget.ColorDeful, width: 2)),
                       contentPadding: EdgeInsets.all(5.0),
                       // icon: Icon(Icons.title),
                       labelText: '请输入title',
@@ -109,6 +132,13 @@ class _editdiaryState extends State<editdiarypage> {
                       //border: InputBorder.none,
                     ),
                     onChanged: _changetitle,
+                    controller: TextEditingController.fromValue(
+                        TextEditingValue(
+                            text: _title,
+                            //设置光标
+                            selection: TextSelection.fromPosition(TextPosition(
+                                affinity: TextAffinity.downstream,
+                                offset: _title.length)))),
                   ),
                 ),
 
@@ -120,12 +150,12 @@ class _editdiaryState extends State<editdiarypage> {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10.0),
                         border: Border.all(
-                          color: _deafulcolor,
+                          color: widget.ColorDeful,
                           width: 1,
                         )),
                     child: //输入内容
                         TextField(
-                      cursorColor: _deafulcolor,
+                      cursorColor: widget.ColorDeful,
                       cursorWidth: 2,
                       style: TextStyle(fontSize: 15),
                       maxLines: null,
@@ -150,7 +180,6 @@ class _editdiaryState extends State<editdiarypage> {
                         // labelText: '请输入内容',
                         labelStyle: TextStyle(
                             fontSize: 10, decorationColor: Colors.yellow),
-
                         //  helperText: '不超过1000字',
                         hintText: "你在想什么...",
                         hintStyle: TextStyle(
@@ -159,19 +188,27 @@ class _editdiaryState extends State<editdiarypage> {
                         border: InputBorder.none,
                       ),
                       onChanged: _changecontext,
+                      controller: TextEditingController.fromValue(
+                          TextEditingValue(
+                              // 设置内容
+                              text: _context,
+                              // 保持光标在最后
+                              selection: TextSelection.fromPosition(
+                                  TextPosition(
+                                      affinity: TextAffinity.downstream,
+                                      offset: _context.length)))),
                     )),
 
                 Container(
                   margin: EdgeInsets.only(left: 10),
                   child: Text(
-                    "$_counter",
+                    _context.length.toString(),
                     style: TextStyle(
                       fontSize: 10,
                       color: Colors.grey,
                     ),
                   ),
                 ),
-
               ],
             )));
   }

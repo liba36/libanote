@@ -80,7 +80,7 @@ class _diarylistState extends State<diarylistpage> {
             DateTime.parse(h["createtime"]),
             DateTime.parse(h["edittime"]));
         diarycard temdiarycard =
-            new diarycard(temdiary, _defaultcolor, _CheckBoxDisplay);
+            new diarycard(temdiary, _defaultcolor, _CheckBoxDisplay,widget._sqlhlper);
         temlistcard.add(temdiarycard);
       }
     }
@@ -107,8 +107,7 @@ class _diarylistState extends State<diarylistpage> {
     Navigator.push(
         context,
         new MaterialPageRoute(
-          builder: (context) => new editdiarypage("touyici", "dierci",
-              widget._sqlhlper, _defaultcolor, widget.BookId),
+          builder: (context) => new editdiarypage(1,widget._sqlhlper, _defaultcolor, new diary(-1, "", "", widget.BookId, null, null)),
         )).then((data) {
       _refresh();
     });
@@ -238,6 +237,11 @@ class _diarylistState extends State<diarylistpage> {
         onPressed: _addDiaryPage,
       );
     } else {
+      /*return FloatingActionButton(
+        backgroundColor: Color.fromRGBO(74, 169, 170, 1),
+        child: Icon(Icons.delete),
+        onPressed: _delete,
+      );*/
       return null;
     }
   }

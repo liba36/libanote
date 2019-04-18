@@ -8,7 +8,7 @@ class editbookpage extends StatefulWidget {
   Color ColorDeful;
   int Type; //0 add 1 edit
   book BookInstance;
-  editbookpage(this.Type, this.SqlUtils, this.ColorDeful,);
+  editbookpage(this.Type, this.SqlUtils, this.ColorDeful,this.BookInstance);
 
   @override
   State<StatefulWidget> createState() {
@@ -99,6 +99,9 @@ class _editbookState extends State<editbookpage> {
         var _NowTime = DateTime.now();
         book _BookTemp = new book(_Title, _Type, _Context, _Image, _NowTime, _NowTime);
         var res = await widget.SqlUtils.inserBook(_BookTemp);
+      }
+    else
+      {
       }
   }
 

@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:liba_note/model/diary.dart';
 import 'package:liba_note/page/diaryviewpage.dart';
 import 'package:liba_note/utils/mulselectevent.dart';
+import 'package:liba_note/utils/sqlhelper.dart';
 
 
 class diarycard extends StatefulWidget {
   diary DiaryInstance;
   Color ColorDeful;
-
   bool CheckBoxDisplay = false;
   bool Checked = false;
+  sqlhelper SqlUtils;
 
-  diarycard(this.DiaryInstance, this.ColorDeful,this.CheckBoxDisplay);
+  diarycard(this.DiaryInstance, this.ColorDeful,this.CheckBoxDisplay,this.SqlUtils);
 
   @override
   State<StatefulWidget> createState() {
@@ -35,7 +36,7 @@ class _diarycardState extends State<diarycard> {
           context,
           new MaterialPageRoute(
               builder: (context) =>
-                  new diaryviewpage(widget.ColorDeful, widget.DiaryInstance)));
+                  new diaryviewpage(widget.ColorDeful, widget.DiaryInstance,widget.SqlUtils)));
     } else {
       setState(() {
         widget. Checked = ! widget.Checked;

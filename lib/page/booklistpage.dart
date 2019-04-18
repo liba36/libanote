@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:liba_note/view/bookcard.dart';
 import 'package:liba_note/model/book.dart';
 
+
 class booklistpage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -129,7 +130,7 @@ class _booklistState extends State<booklistpage> {
     Navigator.push(
         context,
         new MaterialPageRoute(
-          builder: (context) => new editbookpage(0, _SqlUtils, _ColorDeful),
+          builder: (context) => new editbookpage(0, _SqlUtils, _ColorDeful,null),
         )).then((data){
           _refresh();
     });

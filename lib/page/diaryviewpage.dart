@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:liba_note/model/diary.dart';
+import 'package:liba_note/page/editdiarypage.dart';
+import 'package:liba_note/utils/sqlhelper.dart';
+
+
 
 class diaryviewpage extends StatefulWidget {
   Color ColorDeful;
   diary DiaryInstance;
+  sqlhelper SqlUtils;
 
-  diaryviewpage(this.ColorDeful, this.DiaryInstance);
+  diaryviewpage(this.ColorDeful, this.DiaryInstance,this.SqlUtils);
 
   @override
   State<StatefulWidget> createState() {
@@ -14,7 +19,11 @@ class diaryviewpage extends StatefulWidget {
   }
 }
 
+
 class _diaryviewState extends State<diaryviewpage> {
+  _eidt() {
+    Navigator.push(context,new MaterialPageRoute(builder: (context)=>new editdiarypage(0, widget.SqlUtils, widget.ColorDeful, widget.DiaryInstance)));
+  }
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -49,21 +58,14 @@ class _diaryviewState extends State<diaryviewpage> {
           Container(
             padding: EdgeInsets.only(bottom: 10),
             decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: widget.ColorDeful,
-                  width: 1
-                )
-              )
-            ),
-            margin: EdgeInsets.only(left: 18, right: 18,top: 20),
+                border: Border(
+                    bottom: BorderSide(color: widget.ColorDeful, width: 1))),
+            margin: EdgeInsets.only(left: 18, right: 18, top: 20),
             alignment: Alignment.centerLeft,
             child: Text(
               widget.DiaryInstance.title,
-              style: TextStyle(
-                fontSize: 23,
-                color: Color.fromRGBO(66, 66, 66, 1)
-              ),
+              style:
+                  TextStyle(fontSize: 23, color: Color.fromRGBO(66, 66, 66, 1)),
               softWrap: true,
               maxLines: null,
             ),
@@ -73,7 +75,8 @@ class _diaryviewState extends State<diaryviewpage> {
             margin: EdgeInsets.only(left: 20, right: 20, top: 20),
             child: Text(
               widget.DiaryInstance.context,
-              style: TextStyle(fontSize: 18,color: Color.fromRGBO(99, 99, 99, 1)),
+              style:
+                  TextStyle(fontSize: 18, color: Color.fromRGBO(99, 99, 99, 1)),
               softWrap: true,
               maxLines: null,
             ),
@@ -83,7 +86,7 @@ class _diaryviewState extends State<diaryviewpage> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color.fromRGBO(74, 169, 170, 1),
         child: Icon(Icons.edit),
-        // onPressed: _addDiaryPage,
+        onPressed: _eidt,
       ),
     );
   }
