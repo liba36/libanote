@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: booklistpage(),
       theme: new ThemeData(
-        primaryColor: Colors.amberAccent,
+        primaryColor:Color.fromRGBO(74, 169, 170, 1),
       ),
     );
   }

@@ -96,7 +96,7 @@ class _editdiaryState extends State<editdiarypage> {
             IconButton(
               icon: Icon(Icons.done),
               color: widget.ColorDeful,
-              onPressed:_save,
+              onPressed: _save,
             ),
           ],
         ),
@@ -122,7 +122,7 @@ class _editdiaryState extends State<editdiarypage> {
                               BorderSide(color: widget.ColorDeful, width: 2)),
                       contentPadding: EdgeInsets.all(5.0),
                       // icon: Icon(Icons.title),
-                      labelText: '请输入title',
+                      labelText: '请输入标题：',
                       labelStyle: TextStyle(
                         fontSize: 15,
                         color: Colors.grey,
@@ -132,13 +132,14 @@ class _editdiaryState extends State<editdiarypage> {
                       //border: InputBorder.none,
                     ),
                     onChanged: _changetitle,
-                    controller: TextEditingController.fromValue(
-                        TextEditingValue(
-                            text: _title,
-                            //设置光标
-                            selection: TextSelection.fromPosition(TextPosition(
-                                affinity: TextAffinity.downstream,
-                                offset: _title.length)))),
+//设置光标一直在最后
+//                    controller: TextEditingController.fromValue(
+//                        TextEditingValue(
+//                            text: _title,
+//                            //设置光标
+//                            selection: TextSelection.fromPosition(TextPosition(
+//                                affinity: TextAffinity.downstream,
+//                                offset: _title.length)))),
                   ),
                 ),
 
@@ -161,26 +162,9 @@ class _editdiaryState extends State<editdiarypage> {
                       maxLines: null,
                       // keyboardType: TextInputType.text,
                       decoration: InputDecoration(
-                        // enabledBorder: OutlineInputBorder(
-                        //   borderRadius: BorderRadius.all(Radius.circular(10)),
-                        //   borderSide: BorderSide(
-                        //     color: Color.fromRGBO(74, 169, 170, 1),
-                        //     width: 1
-                        //   ),
-                        // ),
-                        // focusedBorder: OutlineInputBorder(
-                        //   borderRadius: BorderRadius.all(Radius.circular(5)),
-                        //   borderSide: BorderSide(
-                        //     color: Color.fromRGBO(74, 169, 170, 1),
-                        //     width: 2
-                        //   ),
-                        // ),
                         contentPadding: EdgeInsets.all(10.0),
-                        // icon: Icon(Icons.text_fields),
-                        // labelText: '请输入内容',
                         labelStyle: TextStyle(
                             fontSize: 10, decorationColor: Colors.yellow),
-                        //  helperText: '不超过1000字',
                         hintText: "你在想什么...",
                         hintStyle: TextStyle(
                           fontSize: 15,
@@ -188,15 +172,6 @@ class _editdiaryState extends State<editdiarypage> {
                         border: InputBorder.none,
                       ),
                       onChanged: _changecontext,
-                      controller: TextEditingController.fromValue(
-                          TextEditingValue(
-                              // 设置内容
-                              text: _context,
-                              // 保持光标在最后
-                              selection: TextSelection.fromPosition(
-                                  TextPosition(
-                                      affinity: TextAffinity.downstream,
-                                      offset: _context.length)))),
                     )),
 
                 Container(
