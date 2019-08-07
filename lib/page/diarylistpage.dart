@@ -5,7 +5,7 @@ import 'package:liba_note/view/diarycard.dart';
 import 'package:liba_note/model/diary.dart';
 import 'package:liba_note/page/editdiarypage.dart';
 import 'package:liba_note/utils/mulselectevent.dart';
-import 'package:liba_note/page/editaccountpage.dart';
+
 
 class diarylistpage extends StatefulWidget {
   sqlhelper _sqlhlper;
@@ -103,19 +103,14 @@ class _diarylistState extends State<diarylistpage> {
   }
 
   _addDiaryPage() {
-//    Navigator.push(
-//        context,
-//        new MaterialPageRoute(
-//          builder: (context) => new editdiarypage(1,widget._sqlhlper, _defaultcolor, new diary(-1, "", "", widget.BookId, null, null)),
-//        )).then((data) {
-//      _refresh();
-//    });
     Navigator.push(
         context,
         new MaterialPageRoute(
-          builder: (context) => new editaccountpage(1,widget._sqlhlper, _defaultcolor, new diary(-1, "", "", widget.BookId, null, null)),
+          builder: (context) => new editdiarypage(1,widget._sqlhlper, _defaultcolor, new diary(-1, "", "", widget.BookId, null, null)),
         )).then((data) {
+      _refresh();
     });
+
   }
 
   _getListText(statu) {

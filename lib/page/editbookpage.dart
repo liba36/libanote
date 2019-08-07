@@ -19,9 +19,9 @@ class editbookpage extends StatefulWidget {
 
 class _editbookState extends State<editbookpage> {
   String _Title = "新的本子哟";
-  int _Type = 0;
+  int _Type = 0;//0 日记， 1 密码本，2，账本
   String _Context = "";
-  int _Image = -1;
+  int _Image = 0;//
 
   List<DropdownMenuItem> _getDdmItem() {
     final List<DropdownMenuItem> _DdmItem = List();
@@ -34,7 +34,7 @@ class _editbookState extends State<editbookpage> {
     final DropdownMenuItem _item2 = DropdownMenuItem(
         value: 1,
         child: Text(
-          "计划",
+          "密码本",
           style: TextStyle(fontSize: 15),
         ));
     final DropdownMenuItem _item3 = DropdownMenuItem(
@@ -43,23 +43,17 @@ class _editbookState extends State<editbookpage> {
           "账本",
           style: TextStyle(fontSize: 15),
         ));
-    final DropdownMenuItem _item4 = DropdownMenuItem(
-        value: 3,
-        child: Text(
-          "密码本",
-          style: TextStyle(fontSize: 15),
-        ));
-    final DropdownMenuItem _item5 = DropdownMenuItem(
-        value: 4,
-        child: Text(
-          "课程表",
-          style: TextStyle(fontSize: 15),
-        ));
+//    final DropdownMenuItem _item4 = DropdownMenuItem(
+//        value: 4,
+//        child: Text(
+//          "课程表",
+//          style: TextStyle(fontSize: 15),
+//        ));
     _DdmItem.add(_item1);
     _DdmItem.add(_item2);
     _DdmItem.add(_item3);
-    _DdmItem.add(_item4);
-    _DdmItem.add(_item5);
+   //_DdmItem.add(_item4);
+
     return _DdmItem;
   }
 
@@ -98,7 +92,7 @@ class _editbookState extends State<editbookpage> {
       {
         var _NowTime = DateTime.now();
         book _BookTemp = new book(_Title, _Type, _Context, _Image, _NowTime, _NowTime);
-        var res = await widget.SqlUtils.inserBook(_BookTemp);
+        var res = await widget.SqlUtils.insertBook(_BookTemp);
       }
     else
       {

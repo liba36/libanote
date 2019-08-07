@@ -52,7 +52,7 @@ class sqlhelper {
         createtime text,
         edittime text)''');
     } catch (e) {
-      _createRes = "create book table error : " + e.toString();
+      _createRes += "create book table error : " + e.toString();
     }
     //日记内容
     try {
@@ -65,7 +65,7 @@ class sqlhelper {
         createtime text,
         edittime text)''');
     } catch (e) {
-      _createRes = "create diary table error : " + e.toString();
+      _createRes += "create diary table error : " + e.toString();
     }
     //图片
     try {
@@ -78,8 +78,26 @@ class sqlhelper {
     } catch (e) {
       _createRes += "create images table error : " + e.toString();
     }
+
+    //密码本内容
+    try {
+      await db.execute('''
+        CREATE TABLE diary (
+        id integer primary key autoincrement, 
+        title text, 
+        name text,
+        password text,
+        bookid integer,
+        createtime text,
+        edittime text)''');
+    } catch (e) {
+      _createRes += "create account table error : " + e.toString();
+    }
   }
 
+  /**
+   * diary 表操作
+   */
   Future<int> insertDiary(diary di) async {
     Database database = await db;
     var result = database.insert("diary", di.diaryTomap());
@@ -95,17 +113,21 @@ class sqlhelper {
 
   Future<int> deleteDiary(int id) async {
     Database database = await db;
-    var result = await database.delete('diary', where: '"id"=?', whereArgs: [id]);
+    var result =
+        await database.delete('diary', where: '"id"=?', whereArgs: [id]);
     return result;
   }
 
-  Future<int> updateDiary(diary di)async
-  {
+  Future<int> updateDiary(diary di) async {
     Database database = await db;
-    var result = await database.update('diary',di.diaryTomap(),where: '"id"=?', whereArgs: [di.id]);
+    var result = await database
+        .update('diary', di.diaryTomap(), where: '"id"=?', whereArgs: [di.id]);
   }
 
-  Future<int> inserBook(book bo) async {
+  /**
+   * book 表操作
+   */
+  Future<int> insertBook(book bo) async {
     Database database = await db;
     var result = database.insert("book", bo.bookTomap());
     return result;
@@ -116,4 +138,9 @@ class sqlhelper {
     var result = await database.rawQuery("select * from book");
     return result;
   }
+
+  /**
+   * account 表操作
+   */
+  Future<bool> insertAccount() {}
 }

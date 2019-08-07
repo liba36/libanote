@@ -1,16 +1,16 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:liba_note/model/diary.dart';
+import 'package:liba_note/model/account.dart';
 import 'package:liba_note/utils/sqlhelper.dart';
 
 class editaccountpage extends StatefulWidget {
   int Type; //0 edit 1 add
   sqlhelper _sqlhlper;
   Color ColorDeful;
-  diary DiaryInstance;
+  account AccountInstance;
 
   editaccountpage(
-      this.Type, this._sqlhlper, this.ColorDeful, this.DiaryInstance);
+      this.Type, this._sqlhlper, this.ColorDeful, this.AccountInstance);
 
   State<StatefulWidget> createState() {
     return new _editaccountState();
@@ -21,7 +21,7 @@ class _editaccountState extends State<editaccountpage> {
   String _AccountName = "新的账户";
   String _AccountID = "";
   String _AccountPWD = "";
-  bool _ObscureText = true;
+  bool _ObscureText = false;
   Icon _PwdView = Icon(Icons.visibility);
 
   @override
@@ -77,93 +77,95 @@ class _editaccountState extends State<editaccountpage> {
   }
 
   _getBody() {
-    return Container(
-      padding: EdgeInsets.all(10),
-      child: Column(
-        children: <Widget>[
-          Container(
-            margin: EdgeInsets.only(left: 40, right: 40, bottom: 20),
-            child: TextField(
-              maxLength: 15,
-              //光标
-              cursorColor: widget.ColorDeful,
-              // cursorWidth: 10,
-              style: TextStyle(fontSize: 16),
-              keyboardType: TextInputType.text,
-              maxLines: null,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(15))),
-                labelText: '请输入名称:',
-                labelStyle: TextStyle(
-                  fontSize: 15,
-                  color: Colors.grey,
+    return SingleChildScrollView(
+      child: Container(
+        padding: EdgeInsets.all(10),
+        child: Column(
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.only(left: 40, right: 40, bottom: 20),
+              child: TextField(
+                maxLength: 15,
+                //光标
+                cursorColor: widget.ColorDeful,
+                // cursorWidth: 10,
+                style: TextStyle(fontSize: 16),
+                keyboardType: TextInputType.text,
+                maxLines: null,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(15))),
+                  labelText: '请输入名称:',
+                  labelStyle: TextStyle(
+                    fontSize: 15,
+                    color: Colors.grey,
+                  ),
+                  prefixIcon: Icon(
+                    Icons.title,
+                  ),
+                  contentPadding: EdgeInsets.all(10.0),
                 ),
-                prefixIcon: Icon(
-                  Icons.title,
-                ),
-                contentPadding: EdgeInsets.all(10.0),
+                onChanged: _setAccountName,
               ),
-              onChanged: _setAccountName,
             ),
-          ),
-          Card(
-            margin: EdgeInsets.only(bottom: 10),
-            elevation: 10,
-            child: TextField(
-              //光标
-              cursorColor: widget.ColorDeful,
-              // cursorWidth: 10,
-              style: TextStyle(fontSize: 16),
-              keyboardType: TextInputType.text,
-              maxLines: null,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: '请输入账户名:',
-                labelStyle: TextStyle(
-                  fontSize: 15,
-                  color: Colors.grey,
+            Card(
+              margin: EdgeInsets.only(bottom: 10),
+              elevation: 10,
+              child: TextField(
+                //光标
+                cursorColor: widget.ColorDeful,
+                // cursorWidth: 10,
+                style: TextStyle(fontSize: 16),
+                keyboardType: TextInputType.text,
+                maxLines: null,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: '请输入账户名:',
+                  labelStyle: TextStyle(
+                    fontSize: 15,
+                    color: Colors.grey,
+                  ),
+                  prefixIcon: Icon(
+                    Icons.perm_identity,
+                  ),
+                  contentPadding: EdgeInsets.all(10.0),
                 ),
-                prefixIcon: Icon(
-                  Icons.perm_identity,
-                ),
-                contentPadding: EdgeInsets.all(10.0),
+                onChanged: _setAccountName,
               ),
-              onChanged: _setAccountName,
             ),
-          ),
-          Card(
-            margin: EdgeInsets.only(bottom: 10),
-            elevation: 10,
-            child: TextField(
-              cursorColor: widget.ColorDeful,
-              style: TextStyle(fontSize: 16),
-              keyboardType: TextInputType.text,
-              obscureText: _ObscureText,
-              maxLines: null,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: '请输入密码:',
-                labelStyle: TextStyle(
-                  fontSize: 15,
-                  color: Colors.grey,
+            Card(
+              margin: EdgeInsets.only(bottom: 10),
+              elevation: 10,
+              child: TextField(
+                cursorColor: widget.ColorDeful,
+                style: TextStyle(fontSize: 16),
+                keyboardType: TextInputType.text,
+                obscureText: _ObscureText,
+                maxLines: null,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: '请输入密码:',
+                  labelStyle: TextStyle(
+                    fontSize: 15,
+                    color: Colors.grey,
+                  ),
+                  prefixIcon: Icon(
+                    Icons.vpn_key,
+                  ),
+                  contentPadding: EdgeInsets.all(10.0),
                 ),
-                prefixIcon: Icon(
-                  Icons.vpn_key,
-                ),
-                contentPadding: EdgeInsets.all(10.0),
+                onChanged: _setAccountName,
               ),
-              onChanged: _setAccountName,
             ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              IconButton(icon: _PwdView, onPressed: _changeObscureText),
-              IconButton(icon: Icon(Icons.content_copy),onPressed: _changeObscureText),
-            ],
-          ),
-        ],
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+//              children: <Widget>[
+//                IconButton(icon: _PwdView, onPressed: _changeObscureText),
+//                IconButton(icon: Icon(Icons.content_copy),onPressed: _changeObscureText),
+//              ],
+            ),
+          ],
+        ),
       ),
     );
   }

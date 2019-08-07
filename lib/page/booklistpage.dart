@@ -102,7 +102,6 @@ class _booklistState extends State<booklistpage> {
     }
   }
 
-
   _bakshow() {
     return showDialog(
           context: context,
@@ -158,7 +157,6 @@ class _booklistState extends State<booklistpage> {
           ),
           preferredSize: Size.fromHeight(36)),
       body: _getbody(),
-
       floatingActionButton: FloatingActionButton(
         onPressed: _addnewbook,
         backgroundColor: _ColorDeful,
